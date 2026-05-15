@@ -4,6 +4,8 @@ import { Brand } from "@/components/Logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Mockup } from "@/components/landing/Mockup";
 import { FaqAccordion } from "@/components/landing/FaqAccordion";
+import { COUNTRIES } from "@/lib/countries";
+import { LOCALES, LOCALE_LABELS } from "@/lib/i18n/dict";
 import { getDict } from "@/lib/i18n/server";
 
 export default async function LandingPage() {
@@ -203,6 +205,61 @@ export default async function LandingPage() {
               <p className="mt-2 text-sm leading-relaxed text-slate-600">{s.dd}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Country & Language coverage */}
+      <section className="mx-auto max-w-6xl px-6 py-24">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+            {t.landing.countriesTitle}
+          </h2>
+          <p className="mt-3 text-slate-600">{t.landing.countriesSub}</p>
+        </div>
+
+        {/* Countries grid */}
+        <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+          {COUNTRIES.map((c) => (
+            <div
+              key={c.code}
+              className={
+                "flex items-center gap-2 rounded-lg border bg-white px-3 py-2 text-sm shadow-sm " +
+                (c.supported ? "border-slate-200" : "border-amber-200 bg-amber-50/40")
+              }
+              title={c.supported ? `${c.taxLabel} ${c.taxRate}% · ${c.currency}` : "Local e-invoicing required"}
+            >
+              <span className="text-base leading-none">{c.flag}</span>
+              <span className="flex-1 truncate font-medium text-slate-800">{c.name}</span>
+              <span className="font-mono text-xs text-slate-400">{c.currency}</span>
+              {!c.supported && (
+                <span className="text-amber-600" aria-label="Local e-invoicing required">⚠</span>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Disclaimer */}
+        <div className="mx-auto mt-8 max-w-3xl rounded-2xl border border-amber-200 bg-amber-50/60 p-5 text-sm text-amber-900">
+          <p className="font-semibold">⚠ {t.landing.countriesNote.split("—")[0].trim()}</p>
+          <p className="mt-1 text-amber-800">{t.landing.countriesNote}</p>
+        </div>
+
+        {/* Languages */}
+        <div className="mt-12 text-center">
+          <p className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+            {t.landing.languagesTitle}
+          </p>
+          <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-2">
+            {LOCALES.map((l) => (
+              <span
+                key={l}
+                className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-700 shadow-sm"
+              >
+                <span className="uppercase text-slate-400">{l}</span>
+                <span>{LOCALE_LABELS[l]}</span>
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 

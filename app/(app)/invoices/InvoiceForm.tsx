@@ -16,6 +16,7 @@ type Props = {
   initial?: InvoiceWithItems;
   defaultClientId?: string;
   defaultCurrency?: string;
+  defaultPaymentTerms?: string;
   action: (formData: FormData) => Promise<{ ok: false; error: string } | void>;
   submitLabel: string;
   showPdfCta?: boolean;
@@ -28,6 +29,7 @@ export function InvoiceForm({
   initial,
   defaultClientId,
   defaultCurrency = "USD",
+  defaultPaymentTerms = "",
   action,
   submitLabel,
   showPdfCta,
@@ -128,6 +130,7 @@ export function InvoiceForm({
           required
         />
         <Input label={t.common.due} type="date" name="due_date" defaultValue={initial?.due_date ?? ""} />
+        <Input label={t.fields.poNumber} name="po_number" defaultValue={initial?.po_number ?? ""} />
       </div>
 
       <div>
@@ -207,8 +210,15 @@ export function InvoiceForm({
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <Textarea label={t.common.notes} name="notes" rows={4} defaultValue={initial?.notes ?? ""} />
+        <div className="space-y-4 lg:col-span-2">
+          <Textarea
+            label={t.fields.paymentTerms}
+            name="payment_terms"
+            rows={3}
+            placeholder={t.fields.paymentTermsHint}
+            defaultValue={initial?.payment_terms ?? defaultPaymentTerms}
+          />
+          <Textarea label={t.common.notes} name="notes" rows={3} defaultValue={initial?.notes ?? ""} />
         </div>
         <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
           <Row label={t.common.subtotal} value={formatCurrency(subtotal, currency)} />

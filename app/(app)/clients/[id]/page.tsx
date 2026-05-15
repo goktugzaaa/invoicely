@@ -11,6 +11,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { DeleteClientButton } from "./DeleteClientButton";
 import { getDict } from "@/lib/i18n/server";
+import { getCountry } from "@/lib/countries";
 import type { Invoice } from "@/types/db";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +58,25 @@ export default async function ClientDetailPage({
             <Detail label={t.common.email}>{client.email || "—"}</Detail>
             <Detail label={t.common.phone}>{client.phone || "—"}</Detail>
             <Detail label={t.common.company}>{client.company || "—"}</Detail>
+            {(() => {
+              const c = getCountry(client.country);
+              return c ? (
+                <Detail label={t.fields.country}>
+                  <span>{c.flag} {c.name}</span>
+                </Detail>
+              ) : null;
+            })()}
+            {client.vat_id && (
+              <Detail label={t.fields.vatId}>
+                <span className="font-mono text-xs">{client.vat_id}</span>
+              </Detail>
+            )}
+            {client.address && (
+              <div>
+                <div className="text-xs font-medium uppercase tracking-wide text-slate-500">{t.fields.address}</div>
+                <p className="mt-1 whitespace-pre-line text-slate-700">{client.address}</p>
+              </div>
+            )}
             <Detail label={t.clients.added}>{formatDate(client.created_at)}</Detail>
             {client.notes && (
               <div>

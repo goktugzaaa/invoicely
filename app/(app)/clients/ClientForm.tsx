@@ -4,7 +4,9 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Input, Textarea, Select } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { CountrySelect, CountryWarning } from "@/components/ui/CountrySelect";
 import { useT } from "@/lib/i18n/context";
+import { getCountry } from "@/lib/countries";
 import type { Client } from "@/types/db";
 
 type Props = {
@@ -18,6 +20,9 @@ export function ClientForm({ initial, action, submitLabel }: Props) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const [country, setCountry] = useState<string>(initial?.country ?? "");
+
+  const preset = getCountry(country);
 
   function onSubmit(formData: FormData) {
     setError(null);
@@ -34,12 +39,26 @@ export function ClientForm({ initial, action, submitLabel }: Props) {
         <Input label={t.common.company} name="company" defaultValue={initial?.company ?? ""} />
         <Input label={t.common.email} name="email" type="email" defaultValue={initial?.email ?? ""} />
         <Input label={t.common.phone} name="phone" defaultValue={initial?.phone ?? ""} />
+        <CountrySelect
+          name="country"
+          label={t.fields.country}
+          value={country}
+          onChange={setCountry}
+          hint={t.fields.countryHint}
+        />
+        <Input
+          label={preset ? `${t.fields.vatId} (${preset.taxIdLabel})` : t.fields.vatId}
+          name="vat_id"
+          defaultValue={initial?.vat_id ?? ""}
+        />
         <Select label={t.common.status} name="status" defaultValue={initial?.status ?? "active"}>
           <option value="active">{t.status.active}</option>
           <option value="inactive">{t.status.inactive}</option>
         </Select>
       </div>
-      <Textarea label={t.common.notes} name="notes" rows={4} defaultValue={initial?.notes ?? ""} />
+      <Textarea label={t.fields.address} name="address" rows={3} defaultValue={initial?.address ?? ""} />
+      <CountryWarning code={country} />
+      <Textarea label={t.common.notes} name="notes" rows={3} defaultValue={initial?.notes ?? ""} />
       {error && (
         <div className="rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-700">{error}</div>
       )}

@@ -1,5 +1,13 @@
-export type Locale = "en" | "tr";
-export const LOCALES: Locale[] = ["en", "tr"];
+export type Locale = "en" | "tr" | "de" | "es" | "fr" | "nl";
+export const LOCALES: Locale[] = ["en", "tr", "de", "es", "fr", "nl"];
+export const LOCALE_LABELS: Record<Locale, string> = {
+  en: "English",
+  tr: "Türkçe",
+  de: "Deutsch",
+  es: "Español",
+  fr: "Français",
+  nl: "Nederlands",
+};
 export const LOCALE_COOKIE = "locale";
 
 const en = {
@@ -84,6 +92,10 @@ const en = {
     ctaTitle: "Ready when you are.",
     ctaSub: "Sign up free. Get to your first invoice in under 60 seconds.",
     footer: "© 2026 Invoicely. Built for the people who actually do the work.",
+    countriesTitle: "Works in 30+ countries",
+    countriesSub: "Pick your country and Invoicely sets your currency, tax label and language defaults — automatically.",
+    countriesNote: "Markets that require government e-invoicing systems (Italy SDI, Mexico CFDI, Brazil NF-e, India GST e-invoicing) are flagged. Invoicely produces a clean PDF accepted by clients but does NOT submit to those national systems — pair it with a local provider for legal compliance.",
+    languagesTitle: "Available in your language",
 
     navFeatures: "Features",
     navPricing: "Pricing",
@@ -305,6 +317,23 @@ const en = {
     profileSaved: "Settings saved",
     logoUpdated: "Logo updated",
   },
+  fields: {
+    country: "Country",
+    countryHint: "Sets currency, tax label and language defaults",
+    vatId: "VAT / Tax ID",
+    address: "Address",
+    bank: "Bank details",
+    bankName: "Bank name",
+    iban: "IBAN",
+    swift: "SWIFT / BIC",
+    accountNumber: "Account number",
+    poNumber: "PO / Reference",
+    paymentTerms: "Payment terms",
+    paymentTermsHint: "e.g. \"Net 30. Pay via bank transfer to the IBAN below.\"",
+    notSupported: "Local e-invoicing system required by law",
+    notSupportedHint: "Invoicely produces a clean PDF invoice but does NOT submit to your government's e-invoicing system.",
+    paymentBlock: "Payment",
+  },
 };
 
 const tr: typeof en = {
@@ -389,6 +418,10 @@ const tr: typeof en = {
     ctaTitle: "Hazır olduğunda buradayız.",
     ctaSub: "Ücretsiz kaydol. 60 saniyeden kısa sürede ilk faturanı kes.",
     footer: "© 2026 Invoicely. İşi gerçekten yapanlar için.",
+    countriesTitle: "30+ ülkede çalışır",
+    countriesSub: "Ülkeni seç — Invoicely para birimini, vergi etiketini ve dil varsayılanlarını otomatik ayarlar.",
+    countriesNote: "Devlet e-fatura sistemi zorunlu olan pazarlar (İtalya SDI, Meksika CFDI, Brezilya NF-e, Hindistan GST e-fatura, Türkiye e-Fatura) işaretlidir. Invoicely temiz bir PDF üretir ama bu ülkelerin ulusal sistemine kayıt göndermez — yasal uyum için yerel bir sağlayıcı ile birlikte kullan.",
+    languagesTitle: "Senin dilinde",
 
     navFeatures: "Özellikler",
     navPricing: "Fiyat",
@@ -610,11 +643,74 @@ const tr: typeof en = {
     profileSaved: "Ayarlar kaydedildi",
     logoUpdated: "Logo güncellendi",
   },
+  fields: {
+    country: "Ülke",
+    countryHint: "Para birimi, vergi etiketi ve dil varsayılanlarını ayarlar",
+    vatId: "Vergi numarası",
+    address: "Adres",
+    bank: "Banka bilgileri",
+    bankName: "Banka adı",
+    iban: "IBAN",
+    swift: "SWIFT / BIC",
+    accountNumber: "Hesap no",
+    poNumber: "PO / Referans",
+    paymentTerms: "Ödeme koşulları",
+    paymentTermsHint: "ör. \"Net 30. Aşağıdaki IBAN'a havale.\"",
+    notSupported: "Yerel e-fatura sistemi yasal olarak zorunlu",
+    notSupportedHint: "Invoicely temiz bir PDF üretir ancak ülkenin e-fatura sistemine kayıt göndermez.",
+    paymentBlock: "Ödeme",
+  },
 };
 
-export const dictionaries = { en, tr } as const;
+// Partial coverage for additional languages — high-traffic strings only.
+// Anything not overridden falls back to English via spread.
+const de: typeof en = {
+  ...en,
+  nav: { ...en.nav, dashboard: "Übersicht", clients: "Kunden", invoices: "Rechnungen", settings: "Einstellungen", signOut: "Abmelden" },
+  common: { ...en.common, save: "Speichern", saveChanges: "Änderungen speichern", cancel: "Abbrechen", delete: "Löschen", edit: "Bearbeiten", new: "Neu", create: "Erstellen", search: "Suchen", total: "Gesamt", subtotal: "Zwischensumme", discount: "Rabatt", tax: "Steuer", status: "Status", currency: "Währung", issued: "Ausgestellt", due: "Fällig", amount: "Betrag", company: "Firma", email: "E-Mail", phone: "Telefon", address: "Adresse", name: "Name", notes: "Notizen", description: "Beschreibung", qty: "Menge", unitPrice: "Einzelpreis", addItem: "Posten hinzufügen", saved: "Gespeichert." },
+  status: { all: "Alle Status", draft: "Entwurf", sent: "Gesendet", paid: "Bezahlt", overdue: "Überfällig", active: "Aktiv", inactive: "Inaktiv" },
+  auth: { ...en.auth, welcomeBack: "Willkommen zurück", signInSub: "Melde dich bei deinem Invoicely-Bereich an.", createAccount: "Konto erstellen", signUpSub: "Beginne, Kunden zu verwalten und Rechnungen zu senden.", signUp: "Registrieren", signInBtn: "Anmelden", createBtn: "Konto erstellen", password: "Passwort", noAccount: "Noch kein Konto?", haveAccount: "Bereits registriert?", confirmEmail: "Bestätige dein Konto per E-Mail und melde dich dann an." },
+  landing: { ...en.landing, signIn: "Anmelden", getStarted: "Loslegen", headline: "Rechnungen und Kunden — endlich an einem Ort.", headlinePre: "Rechnungen und Kunden,", headlineHighlight: "endlich an einem Ort.", sub: "Ein leichter Arbeitsplatz für Freelancer und kleine Agenturen. Verfolge Kunden, sende PDF-Rechnungen und sieh, wie der Umsatz reinkommt — ohne Excel.", createFree: "Kostenloses Konto erstellen", tryDemo: "Live-Demo testen", noCard: "Kostenlos in der Beta · Keine Kreditkarte" },
+  toast: { invoiceCreated: "Rechnung erstellt", invoiceUpdated: "Rechnung aktualisiert", invoiceDeleted: "Rechnung gelöscht", invoicePaid: "Als bezahlt markiert", invoiceSent: "Als gesendet markiert", clientCreated: "Kunde erstellt", clientUpdated: "Kunde aktualisiert", clientDeleted: "Kunde gelöscht", profileSaved: "Einstellungen gespeichert", logoUpdated: "Logo aktualisiert" },
+  language: { ...en.language, label: "Sprache" },
+};
+
+const es: typeof en = {
+  ...en,
+  nav: { ...en.nav, dashboard: "Panel", clients: "Clientes", invoices: "Facturas", settings: "Ajustes", signOut: "Cerrar sesión" },
+  common: { ...en.common, save: "Guardar", saveChanges: "Guardar cambios", cancel: "Cancelar", delete: "Eliminar", edit: "Editar", new: "Nuevo", create: "Crear", search: "Buscar", total: "Total", subtotal: "Subtotal", discount: "Descuento", tax: "Impuesto", status: "Estado", currency: "Moneda", issued: "Emitida", due: "Vencimiento", amount: "Importe", company: "Empresa", email: "Email", phone: "Teléfono", address: "Dirección", name: "Nombre", notes: "Notas", description: "Descripción", qty: "Cant.", unitPrice: "Precio unitario", addItem: "Añadir línea", saved: "Guardado." },
+  status: { all: "Todos los estados", draft: "Borrador", sent: "Enviada", paid: "Pagada", overdue: "Vencida", active: "Activo", inactive: "Inactivo" },
+  auth: { ...en.auth, welcomeBack: "Bienvenido de nuevo", signInSub: "Inicia sesión en tu espacio Invoicely.", createAccount: "Crea tu cuenta", signUpSub: "Empieza a gestionar clientes y enviar facturas.", signUp: "Registrarse", signInBtn: "Iniciar sesión", createBtn: "Crear cuenta", password: "Contraseña", noAccount: "¿No tienes cuenta?", haveAccount: "¿Ya estás registrado?", confirmEmail: "Confirma tu cuenta por email y luego inicia sesión." },
+  landing: { ...en.landing, signIn: "Iniciar sesión", getStarted: "Empezar", headline: "Facturas y clientes, por fin en un solo lugar.", headlinePre: "Facturas y clientes,", headlineHighlight: "por fin en un solo lugar.", sub: "Un espacio ligero para freelancers y agencias pequeñas. Gestiona clientes, envía facturas en PDF y ve cómo entra el dinero — sin hojas de cálculo.", createFree: "Crear cuenta gratis", tryDemo: "Probar la demo", noCard: "Gratis durante la beta · Sin tarjeta" },
+  toast: { invoiceCreated: "Factura creada", invoiceUpdated: "Factura actualizada", invoiceDeleted: "Factura eliminada", invoicePaid: "Marcada como pagada", invoiceSent: "Marcada como enviada", clientCreated: "Cliente creado", clientUpdated: "Cliente actualizado", clientDeleted: "Cliente eliminado", profileSaved: "Ajustes guardados", logoUpdated: "Logo actualizado" },
+  language: { ...en.language, label: "Idioma" },
+};
+
+const fr: typeof en = {
+  ...en,
+  nav: { ...en.nav, dashboard: "Tableau de bord", clients: "Clients", invoices: "Factures", settings: "Paramètres", signOut: "Déconnexion" },
+  common: { ...en.common, save: "Enregistrer", saveChanges: "Enregistrer", cancel: "Annuler", delete: "Supprimer", edit: "Modifier", new: "Nouveau", create: "Créer", search: "Rechercher", total: "Total", subtotal: "Sous-total", discount: "Remise", tax: "TVA", status: "Statut", currency: "Devise", issued: "Émise le", due: "Échéance", amount: "Montant", company: "Société", email: "Email", phone: "Téléphone", address: "Adresse", name: "Nom", notes: "Notes", description: "Description", qty: "Qté", unitPrice: "Prix unitaire", addItem: "Ajouter une ligne", saved: "Enregistré." },
+  status: { all: "Tous les statuts", draft: "Brouillon", sent: "Envoyée", paid: "Payée", overdue: "En retard", active: "Actif", inactive: "Inactif" },
+  auth: { ...en.auth, welcomeBack: "Bienvenue", signInSub: "Connectez-vous à votre espace Invoicely.", createAccount: "Créer un compte", signUpSub: "Commencez à gérer vos clients et envoyer des factures.", signUp: "S'inscrire", signInBtn: "Se connecter", createBtn: "Créer le compte", password: "Mot de passe", noAccount: "Pas encore de compte ?", haveAccount: "Déjà inscrit ?", confirmEmail: "Confirmez votre compte par email puis connectez-vous." },
+  landing: { ...en.landing, signIn: "Se connecter", getStarted: "Commencer", headline: "Factures et clients, enfin au même endroit.", headlinePre: "Factures et clients,", headlineHighlight: "enfin au même endroit.", sub: "Un espace léger pour freelances et petites agences. Gérez vos clients, envoyez des factures PDF et voyez l'argent rentrer — sans tableurs.", createFree: "Créer un compte gratuit", tryDemo: "Essayer la démo", noCard: "Gratuit pendant la bêta · Sans carte" },
+  toast: { invoiceCreated: "Facture créée", invoiceUpdated: "Facture mise à jour", invoiceDeleted: "Facture supprimée", invoicePaid: "Marquée comme payée", invoiceSent: "Marquée comme envoyée", clientCreated: "Client créé", clientUpdated: "Client mis à jour", clientDeleted: "Client supprimé", profileSaved: "Paramètres enregistrés", logoUpdated: "Logo mis à jour" },
+  language: { ...en.language, label: "Langue" },
+};
+
+const nl: typeof en = {
+  ...en,
+  nav: { ...en.nav, dashboard: "Dashboard", clients: "Klanten", invoices: "Facturen", settings: "Instellingen", signOut: "Afmelden" },
+  common: { ...en.common, save: "Opslaan", saveChanges: "Wijzigingen opslaan", cancel: "Annuleren", delete: "Verwijderen", edit: "Bewerken", new: "Nieuw", create: "Maken", search: "Zoeken", total: "Totaal", subtotal: "Subtotaal", discount: "Korting", tax: "BTW", status: "Status", currency: "Valuta", issued: "Verzonden", due: "Vervaldatum", amount: "Bedrag", company: "Bedrijf", email: "E-mail", phone: "Telefoon", address: "Adres", name: "Naam", notes: "Notities", description: "Omschrijving", qty: "Aantal", unitPrice: "Prijs", addItem: "Regel toevoegen", saved: "Opgeslagen." },
+  status: { all: "Alle statussen", draft: "Concept", sent: "Verzonden", paid: "Betaald", overdue: "Verlopen", active: "Actief", inactive: "Inactief" },
+  auth: { ...en.auth, welcomeBack: "Welkom terug", signInSub: "Meld je aan bij je Invoicely-werkruimte.", createAccount: "Account aanmaken", signUpSub: "Begin met klantbeheer en facturatie.", signUp: "Aanmelden", signInBtn: "Inloggen", createBtn: "Account aanmaken", password: "Wachtwoord", noAccount: "Nog geen account?", haveAccount: "Al geregistreerd?", confirmEmail: "Bevestig je account per e-mail en log dan in." },
+  landing: { ...en.landing, signIn: "Inloggen", getStarted: "Starten", headline: "Facturen en klanten, eindelijk op één plek.", headlinePre: "Facturen en klanten,", headlineHighlight: "eindelijk op één plek.", sub: "Een lichte werkruimte voor freelancers en kleine bureaus. Beheer klanten, verzend PDF-facturen en zie omzet binnenkomen — zonder spreadsheets.", createFree: "Gratis account aanmaken", tryDemo: "Probeer de demo", noCard: "Gratis tijdens beta · Geen creditcard" },
+  toast: { invoiceCreated: "Factuur aangemaakt", invoiceUpdated: "Factuur bijgewerkt", invoiceDeleted: "Factuur verwijderd", invoicePaid: "Gemarkeerd als betaald", invoiceSent: "Gemarkeerd als verzonden", clientCreated: "Klant aangemaakt", clientUpdated: "Klant bijgewerkt", clientDeleted: "Klant verwijderd", profileSaved: "Instellingen opgeslagen", logoUpdated: "Logo bijgewerkt" },
+  language: { ...en.language, label: "Taal" },
+};
+
+export const dictionaries: Record<Locale, typeof en> = { en, tr, de, es, fr, nl };
 export type Dict = typeof en;
 
 export function isLocale(value: string | undefined | null): value is Locale {
-  return value === "en" || value === "tr";
+  return value === "en" || value === "tr" || value === "de" || value === "es" || value === "fr" || value === "nl";
 }

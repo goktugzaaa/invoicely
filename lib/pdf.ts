@@ -1,5 +1,6 @@
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFImage, type PDFPage } from "pdf-lib";
-import type { InvoiceWithItems, Profile } from "@/types/db";
+import type { InvoiceWithItems, Profile, Client } from "@/types/db";
+import { invoiceWord, getCountry } from "@/lib/countries";
 
 const COLOR = {
   text: rgb(0.12, 0.16, 0.23),
@@ -27,6 +28,8 @@ export interface PdfOpts {
   logoBytes?: Uint8Array | null;
   fallbackName?: string;
   fallbackEmail?: string;
+  /** Full client object (with address, vat_id) — not just the slim joined version */
+  clientFull?: Client | null;
 }
 
 export async function renderInvoicePdf(
@@ -42,9 +45,10 @@ export async function renderInvoicePdf(
   const margin = 48;
   const ccy = invoice.currency || "USD";
 
-  const sellerName =
-    opts.profile?.business_name || opts.fallbackName || "Invoicely";
+  const sellerName = opts.profile?.business_name || opts.fallbackName || "Invoicely";
   const sellerEmail = opts.profile?.email || opts.fallbackEmail || "";
+  const sellerCountry = getCountry(opts.profile?.country);
+  const invoiceTitle = (invoiceWord(opts.profile?.country) || "INVOICE").toUpperCase();
 
   // Try embed logo
   let logo: PDFImage | null = null;
@@ -79,13 +83,12 @@ export async function renderInvoicePdf(
     });
   }
 
-  // INVOICE label + number (right)
-  drawRight(page, bold, "INVOICE", width - margin, height - 60, 24, COLOR.text);
+  drawRight(page, bold, invoiceTitle, width - margin, height - 60, 24, COLOR.text);
   drawRight(page, font, invoice.invoice_number, width - margin, height - 82, 11, COLOR.muted);
 
-  // Seller block (under header)
+  // Seller block
   let sy = height - 150;
-  page.drawText("From", { x: margin, y: sy, size: 9, font: bold, color: COLOR.muted });
+  page.drawText("FROM", { x: margin, y: sy, size: 9, font: bold, color: COLOR.muted });
   sy -= 14;
   page.drawText(sellerName, { x: margin, y: sy, size: 11, font: bold, color: COLOR.text });
   sy -= 14;
@@ -101,7 +104,8 @@ export async function renderInvoicePdf(
     sy = wrapText(page, font, opts.profile.address, margin, sy, 220, 10, COLOR.muted);
   }
   if (opts.profile?.tax_id) {
-    page.drawText(`Tax ID: ${opts.profile.tax_id}`, {
+    const label = sellerCountry?.taxIdLabel || "Tax ID";
+    page.drawText(`${label}: ${opts.profile.tax_id}`, {
       x: margin,
       y: sy,
       size: 9,
@@ -114,9 +118,11 @@ export async function renderInvoicePdf(
   // Bill to (right column)
   const billX = width / 2 + 20;
   let by = height - 150;
-  page.drawText("Bill to", { x: billX, y: by, size: 9, font: bold, color: COLOR.muted });
+  const client = opts.clientFull ?? null;
+  const clientCountry = getCountry(client?.country);
+  page.drawText("BILL TO", { x: billX, y: by, size: 9, font: bold, color: COLOR.muted });
   by -= 14;
-  page.drawText(invoice.client?.name ?? "—", {
+  page.drawText(client?.name ?? invoice.client?.name ?? "—", {
     x: billX,
     y: by,
     size: 11,
@@ -124,12 +130,32 @@ export async function renderInvoicePdf(
     color: COLOR.text,
   });
   by -= 14;
-  if (invoice.client?.company) {
-    page.drawText(invoice.client.company, { x: billX, y: by, size: 10, font, color: COLOR.text });
+  if (client?.company || invoice.client?.company) {
+    page.drawText(client?.company ?? invoice.client?.company ?? "", {
+      x: billX,
+      y: by,
+      size: 10,
+      font,
+      color: COLOR.text,
+    });
     by -= 12;
   }
-  if (invoice.client?.email) {
-    page.drawText(invoice.client.email, { x: billX, y: by, size: 10, font, color: COLOR.muted });
+  if (client?.email || invoice.client?.email) {
+    page.drawText(client?.email ?? invoice.client?.email ?? "", {
+      x: billX,
+      y: by,
+      size: 10,
+      font,
+      color: COLOR.muted,
+    });
+    by -= 12;
+  }
+  if (client?.address) {
+    by = wrapText(page, font, client.address, billX, by, 220, 10, COLOR.muted);
+  }
+  if (client?.vat_id) {
+    const label = clientCountry?.taxIdLabel || "VAT";
+    page.drawText(`${label}: ${client.vat_id}`, { x: billX, y: by, size: 9, font, color: COLOR.muted });
     by -= 12;
   }
 
@@ -138,9 +164,11 @@ export async function renderInvoicePdf(
   const metaRows: [string, string][] = [
     ["Issue date", fmtDate(invoice.issue_date)],
     ["Due date", fmtDate(invoice.due_date)],
-    ["Status", invoice.status.toUpperCase()],
-    ["Currency", ccy],
   ];
+  if (invoice.po_number) metaRows.push(["PO / Reference", invoice.po_number]);
+  metaRows.push(["Status", invoice.status.toUpperCase()]);
+  metaRows.push(["Currency", ccy]);
+
   metaRows.forEach(([label, value], i) => {
     const y = metaTop - i * 16;
     page.drawText(label, { x: margin, y, size: 9, font: bold, color: COLOR.muted });
@@ -188,7 +216,7 @@ export async function renderInvoicePdf(
     y -= 20;
   });
 
-  // Totals breakdown
+  // Totals
   y -= 4;
   page.drawLine({
     start: { x: margin, y: y + 12 },
@@ -202,6 +230,7 @@ export async function renderInvoicePdf(
   const taxRate = Number(invoice.tax_rate ?? 0);
   const taxAmount = Math.max(subtotal - discount, 0) * (taxRate / 100);
   const totalsX = width - margin - 200;
+  const taxLabel = sellerCountry?.taxLabel || "Tax";
 
   drawRight(page, font, "Subtotal", totalsX + 120, y - 4, 10, COLOR.muted);
   drawRight(page, font, fmtMoney(subtotal, ccy), width - margin, y - 4, 10, COLOR.text);
@@ -212,7 +241,7 @@ export async function renderInvoicePdf(
     y -= 16;
   }
   if (taxRate > 0) {
-    drawRight(page, font, `Tax (${taxRate}%)`, totalsX + 120, y - 4, 10, COLOR.muted);
+    drawRight(page, font, `${taxLabel} (${taxRate}%)`, totalsX + 120, y - 4, 10, COLOR.muted);
     drawRight(page, font, fmtMoney(taxAmount, ccy), width - margin, y - 4, 10, COLOR.text);
     y -= 16;
   }
@@ -225,11 +254,33 @@ export async function renderInvoicePdf(
   drawRight(page, bold, "Total due", totalsX + 120, y - 14, 11, COLOR.muted);
   drawRight(page, bold, fmtMoney(Number(invoice.total_amount), ccy), width - margin, y - 14, 14, COLOR.brand);
 
+  // Payment block (bank info from profile + payment_terms)
+  let py = y - 50;
+  const bankBits: string[] = [];
+  if (opts.profile?.bank_name) bankBits.push(`Bank: ${opts.profile.bank_name}`);
+  if (opts.profile?.bank_iban) bankBits.push(`IBAN: ${opts.profile.bank_iban}`);
+  if (opts.profile?.bank_swift) bankBits.push(`SWIFT/BIC: ${opts.profile.bank_swift}`);
+  if (opts.profile?.bank_account) bankBits.push(`Account: ${opts.profile.bank_account}`);
+
+  if (bankBits.length || invoice.payment_terms) {
+    page.drawText("PAYMENT", { x: margin, y: py, size: 9, font: bold, color: COLOR.muted });
+    py -= 14;
+    if (invoice.payment_terms) {
+      py = wrapText(page, font, invoice.payment_terms, margin, py, width - margin * 2, 10, COLOR.text);
+      py -= 4;
+    }
+    for (const line of bankBits) {
+      page.drawText(line, { x: margin, y: py, size: 10, font, color: COLOR.text });
+      py -= 14;
+    }
+  }
+
   // Notes
   if (invoice.notes) {
-    const notesY = y - 50;
-    page.drawText("Notes", { x: margin, y: notesY, size: 9, font: bold, color: COLOR.muted });
-    wrapText(page, font, invoice.notes, margin, notesY - 16, width - margin * 2, 10, COLOR.text);
+    py -= 8;
+    page.drawText("NOTES", { x: margin, y: py, size: 9, font: bold, color: COLOR.muted });
+    py -= 14;
+    py = wrapText(page, font, invoice.notes, margin, py, width - margin * 2, 10, COLOR.text);
   }
 
   // Footer
@@ -271,22 +322,25 @@ function wrapText(
   size: number,
   color = COLOR.text
 ): number {
-  const words = text.split(/\s+/);
-  let line = "";
+  const lines = text.split("\n");
   let cy = y;
-  for (const w of words) {
-    const test = line ? line + " " + w : w;
-    if (font.widthOfTextAtSize(test, size) > maxWidth) {
+  for (const ln of lines) {
+    const words = ln.split(/\s+/);
+    let line = "";
+    for (const w of words) {
+      const test = line ? line + " " + w : w;
+      if (font.widthOfTextAtSize(test, size) > maxWidth) {
+        page.drawText(line, { x, y: cy, size, font, color });
+        cy -= size + 4;
+        line = w;
+      } else {
+        line = test;
+      }
+    }
+    if (line) {
       page.drawText(line, { x, y: cy, size, font, color });
       cy -= size + 4;
-      line = w;
-    } else {
-      line = test;
     }
-  }
-  if (line) {
-    page.drawText(line, { x, y: cy, size, font, color });
-    cy -= size + 4;
   }
   return cy;
 }

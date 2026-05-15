@@ -8,6 +8,9 @@ export interface Client {
   email: string | null;
   phone: string | null;
   company: string | null;
+  address: string | null;
+  vat_id: string | null;
+  country: string | null;
   notes: string | null;
   status: ClientStatus;
   created_at: string;
@@ -35,6 +38,8 @@ export interface Invoice {
   status: InvoiceStatus;
   issue_date: string;
   due_date: string | null;
+  po_number: string | null;
+  payment_terms: string | null;
   notes: string | null;
   created_at: string;
 }
@@ -48,7 +53,16 @@ export interface Profile {
   tax_id: string | null;
   logo_path: string | null;
   default_currency: string;
+  country: string | null;
+  bank_name: string | null;
+  bank_iban: string | null;
+  bank_swift: string | null;
+  bank_account: string | null;
   updated_at: string;
+}
+
+export interface InvoiceWithClientFull extends Invoice {
+  client: Client | null;
 }
 
 export interface InvoiceWithClient extends Invoice {

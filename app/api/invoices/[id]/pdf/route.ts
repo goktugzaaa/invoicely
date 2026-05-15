@@ -1,5 +1,6 @@
 import { requireUser } from "@/lib/auth";
 import { getInvoice } from "@/services/invoices";
+import { getClient } from "@/services/clients";
 import { getProfile, fetchLogoBytes } from "@/services/profile";
 import { renderInvoicePdf } from "@/lib/pdf";
 
@@ -16,12 +17,16 @@ export async function GET(
     const invoice = await getInvoice(user.id, id);
     if (!invoice) return new Response("Not found", { status: 404 });
 
-    const profile = await getProfile(user.id);
+    const [profile, clientFull] = await Promise.all([
+      getProfile(user.id),
+      getClient(user.id, invoice.client_id),
+    ]);
     const logoBytes = profile?.logo_path ? await fetchLogoBytes(profile.logo_path) : null;
 
     const bytes = await renderInvoicePdf(invoice, {
       profile,
       logoBytes,
+      clientFull,
       fallbackName: user.user_metadata?.full_name || user.email || "Invoicely",
       fallbackEmail: user.email ?? "",
     });

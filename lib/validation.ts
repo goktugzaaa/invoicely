@@ -5,6 +5,9 @@ export const clientSchema = z.object({
   email: z.string().email("Invalid email").max(160).optional().or(z.literal("")),
   phone: z.string().max(40).optional().or(z.literal("")),
   company: z.string().max(160).optional().or(z.literal("")),
+  address: z.string().max(500).optional().or(z.literal("")),
+  vat_id: z.string().max(80).optional().or(z.literal("")),
+  country: z.string().max(2).optional().or(z.literal("")),
   notes: z.string().max(2000).optional().or(z.literal("")),
   status: z.enum(["active", "inactive"]).default("active"),
 });
@@ -25,6 +28,8 @@ export const invoiceSchema = z.object({
   currency: z.string().min(3).max(8).default("USD"),
   tax_rate: z.coerce.number().min(0).max(100).default(0),
   discount: z.coerce.number().min(0).default(0),
+  po_number: z.string().max(80).optional().or(z.literal("")),
+  payment_terms: z.string().max(2000).optional().or(z.literal("")),
   notes: z.string().max(2000).optional().or(z.literal("")),
   items: z.array(invoiceItemSchema).min(1, "At least one item"),
 });
@@ -37,5 +42,10 @@ export const profileSchema = z.object({
   address: z.string().max(500).optional().or(z.literal("")),
   tax_id: z.string().max(80).optional().or(z.literal("")),
   default_currency: z.string().min(3).max(8).default("USD"),
+  country: z.string().max(2).optional().or(z.literal("")),
+  bank_name: z.string().max(160).optional().or(z.literal("")),
+  bank_iban: z.string().max(80).optional().or(z.literal("")),
+  bank_swift: z.string().max(40).optional().or(z.literal("")),
+  bank_account: z.string().max(80).optional().or(z.literal("")),
 });
 export type ProfileInput = z.infer<typeof profileSchema>;

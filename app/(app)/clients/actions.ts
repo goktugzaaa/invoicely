@@ -11,8 +11,25 @@ function parseFormData(formData: FormData) {
     email: String(formData.get("email") ?? ""),
     phone: String(formData.get("phone") ?? ""),
     company: String(formData.get("company") ?? ""),
+    address: String(formData.get("address") ?? ""),
+    vat_id: String(formData.get("vat_id") ?? ""),
+    country: String(formData.get("country") ?? ""),
     notes: String(formData.get("notes") ?? ""),
     status: (formData.get("status") as "active" | "inactive") || "active",
+  };
+}
+
+function rowFrom(parsed: ReturnType<typeof clientSchema.parse>) {
+  return {
+    name: parsed.name,
+    email: parsed.email || null,
+    phone: parsed.phone || null,
+    company: parsed.company || null,
+    address: parsed.address || null,
+    vat_id: parsed.vat_id || null,
+    country: parsed.country ? parsed.country.toUpperCase() : null,
+    notes: parsed.notes || null,
+    status: parsed.status,
   };
 }
 
@@ -24,12 +41,7 @@ export async function createClientAction(formData: FormData) {
   }
   const { error } = await supabase.from("clients").insert({
     user_id: user.id,
-    name: parsed.data.name,
-    email: parsed.data.email || null,
-    phone: parsed.data.phone || null,
-    company: parsed.data.company || null,
-    notes: parsed.data.notes || null,
-    status: parsed.data.status,
+    ...rowFrom(parsed.data),
   });
   if (error) return { ok: false as const, error: error.message };
   revalidatePath("/clients");
@@ -45,14 +57,7 @@ export async function updateClientAction(id: string, formData: FormData) {
   }
   const { error } = await supabase
     .from("clients")
-    .update({
-      name: parsed.data.name,
-      email: parsed.data.email || null,
-      phone: parsed.data.phone || null,
-      company: parsed.data.company || null,
-      notes: parsed.data.notes || null,
-      status: parsed.data.status,
-    })
+    .update(rowFrom(parsed.data))
     .eq("id", id)
     .eq("user_id", user.id);
   if (error) return { ok: false as const, error: error.message };

@@ -27,6 +27,8 @@ function parseFormData(formData: FormData): InvoiceInput {
     currency: String(formData.get("currency") ?? "USD"),
     tax_rate: Number(formData.get("tax_rate") ?? 0),
     discount: Number(formData.get("discount") ?? 0),
+    po_number: String(formData.get("po_number") ?? ""),
+    payment_terms: String(formData.get("payment_terms") ?? ""),
     notes: String(formData.get("notes") ?? ""),
     items,
   };
@@ -72,6 +74,8 @@ export async function createInvoiceAction(formData: FormData) {
       status: parsed.data.status,
       issue_date: parsed.data.issue_date,
       due_date: parsed.data.due_date || null,
+      po_number: parsed.data.po_number || null,
+      payment_terms: parsed.data.payment_terms || null,
       notes: parsed.data.notes || null,
       sent_at: parsed.data.status !== "draft" ? now : null,
       paid_at: parsed.data.status === "paid" ? now : null,
@@ -116,6 +120,8 @@ export async function updateInvoiceAction(id: string, formData: FormData) {
     discount: parsed.data.discount,
     subtotal,
     total_amount: total,
+    po_number: parsed.data.po_number || null,
+    payment_terms: parsed.data.payment_terms || null,
     notes: parsed.data.notes || null,
   };
   if (parsed.data.status !== "draft" && !cur?.sent_at) patch.sent_at = now;
