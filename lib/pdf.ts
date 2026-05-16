@@ -5,20 +5,23 @@ import path from "path";
 import type { InvoiceWithItems, Profile, Client } from "@/types/db";
 import { invoiceWord, getCountry, getDateLocale } from "@/lib/countries";
 
-// Cache TTF bytes across invocations (warm Lambda)
-let regularBytesCache: Uint8Array | null = null;
-let boldBytesCache: Uint8Array | null = null;
-
+// IMPORTANT: do NOT cache font bytes across invocations.
+// pdf-lib's embedFont (especially with subset:true) holds references and may
+// mutate the underlying buffer. Reusing the same Uint8Array on a warm Lambda
+// produces corrupt PDFs where most glyphs are missing.
 async function loadFontBytes(filename: string): Promise<Uint8Array> {
   const fontPath = path.join(process.cwd(), "public", "fonts", filename);
   const buf = await fs.readFile(fontPath);
+  // Copy to a fresh Uint8Array so subsequent reads/calls get an independent buffer
   return new Uint8Array(buf);
 }
 
 async function getInterFonts() {
-  if (!regularBytesCache) regularBytesCache = await loadFontBytes("Inter-Regular.ttf");
-  if (!boldBytesCache) boldBytesCache = await loadFontBytes("Inter-Bold.ttf");
-  return { regular: regularBytesCache, bold: boldBytesCache };
+  const [regular, bold] = await Promise.all([
+    loadFontBytes("Inter-Regular.ttf"),
+    loadFontBytes("Inter-Bold.ttf"),
+  ]);
+  return { regular, bold };
 }
 
 const COLOR = {
@@ -66,9 +69,10 @@ export async function renderInvoicePdf(
   let bold: PDFFont;
   try {
     const { regular, bold: boldBytes } = await getInterFonts();
-    // subset: true keeps the PDF small by only embedding glyphs we actually use
-    font = await pdf.embedFont(regular, { subset: true });
-    bold = await pdf.embedFont(boldBytes, { subset: true });
+    // subset: false → embed full glyph table. Slightly larger PDF (~600KB) but
+    // guarantees every Unicode char renders, including TR İ/ğ/ç/ş/ü/ö/ı.
+    font = await pdf.embedFont(regular, { subset: false });
+    bold = await pdf.embedFont(boldBytes, { subset: false });
   } catch {
     // Fallback to standard Helvetica if font files missing
     font = await pdf.embedFont(StandardFonts.Helvetica);
