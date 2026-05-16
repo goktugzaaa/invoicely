@@ -5,7 +5,7 @@ export function Mockup() {
         <span className="h-2.5 w-2.5 rounded-full bg-rose-300" />
         <span className="h-2.5 w-2.5 rounded-full bg-amber-300" />
         <span className="h-2.5 w-2.5 rounded-full bg-emerald-300" />
-        <span className="ml-3 text-xs text-slate-400">app.invoicely.com/dashboard</span>
+        <span className="ml-3 text-xs text-slate-400">app.paidly.app/dashboard</span>
       </div>
       <div className="grid grid-cols-12 gap-0">
         <div className="hidden border-r border-slate-100 bg-white p-4 sm:col-span-3 sm:block lg:col-span-2">

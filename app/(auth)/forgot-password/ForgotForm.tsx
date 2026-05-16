@@ -4,23 +4,18 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useT } from "@/lib/i18n/context";
 
-const schema = z.object({
-  email: z.string().email("Invalid email"),
-  password: z.string().min(6, "Min 6 characters"),
-});
+const schema = z.object({ email: z.string().email("Invalid email") });
 type FormData = z.infer<typeof schema>;
 
-export function SignupForm() {
+export function ForgotForm() {
   const t = useT();
-  const router = useRouter();
+  const [sent, setSent] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
-  const [info, setInfo] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -29,23 +24,28 @@ export function SignupForm() {
 
   async function onSubmit(values: FormData) {
     setServerError(null);
-    setInfo(null);
     const supabase = createClient();
     const origin = window.location.origin;
-    const { data, error } = await supabase.auth.signUp({
-      ...values,
-      options: { emailRedirectTo: `${origin}/auth/callback?type=signup` },
+    const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
+      redirectTo: `${origin}/auth/callback?type=recovery`,
     });
     if (error) {
-      setServerError(error.message);
-      return;
+      // Show generic success regardless to avoid user enumeration,
+      // but log/show error if it's a network/config issue
+      if (!/rate|valid/i.test(error.message)) {
+        setServerError(error.message);
+        return;
+      }
     }
-    if (data.session) {
-      router.push("/dashboard");
-      router.refresh();
-    } else {
-      setInfo(t.auth.confirmEmail);
-    }
+    setSent(true);
+  }
+
+  if (sent) {
+    return (
+      <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
+        ✓ {t.auth.forgotSent}
+      </div>
+    );
   }
 
   return (
@@ -58,22 +58,11 @@ export function SignupForm() {
         {...register("email")}
         error={errors.email?.message}
       />
-      <Input
-        label={t.auth.password}
-        type="password"
-        autoComplete="new-password"
-        placeholder="At least 6 characters"
-        {...register("password")}
-        error={errors.password?.message}
-      />
       {serverError && (
         <div className="rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-700">{serverError}</div>
       )}
-      {info && (
-        <div className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-700">{info}</div>
-      )}
       <Button type="submit" className="w-full" loading={isSubmitting}>
-        {t.auth.createBtn}
+        {t.auth.forgotBtn}
       </Button>
     </form>
   );

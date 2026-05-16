@@ -50,7 +50,7 @@ export function CountryWarning({ code }: { code?: string | null }) {
     <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800">
       <div className="font-semibold">⚠ {c.flag} {c.name} — local e-invoicing required</div>
       <p className="mt-0.5 text-amber-700">
-        Invoicely produces a clean PDF accepted by clients, but does NOT submit invoices to the
+        Paidly produces a clean PDF accepted by clients, but does NOT submit invoices to the
         national e-invoicing system (Italy SDI, Mexico CFDI, Brazil NF-e, India GST). For legal
         compliance use a local provider in addition.
       </p>

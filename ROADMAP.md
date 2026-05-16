@@ -1,4 +1,4 @@
-# Invoicely — Product Roadmap
+# Paidly — Product Roadmap
 
 A pragmatic, monetization-aware roadmap to turn the MVP into a sellable, sticky SaaS product. Phases are ordered by **revenue impact ÷ build cost**.
 
@@ -59,7 +59,7 @@ Legend
 | 🟡🌍 **Hreflang + locale URLs** (`/en`, `/tr`) | mid | SEO — landing page ranks in both languages. |
 | 🟡🌍 **More languages** (DE, ES, FR — auto-translate v1) | mid | Each language = new market. |
 | 🟢 **OG image generator** for landing page | quick | Sharing on Twitter / LinkedIn looks pro. |
-| 🟡 **Public client portal** (`invoicely.com/pay/abc123`) | mid | Clients view invoice without an account → faster payment. |
+| 🟡 **Public client portal** (`paidly.app/pay/abc123`) | mid | Clients view invoice without an account → faster payment. |
 | 🟢 **Status page widget** (uptime badge in footer) | quick | Trust signal. Use BetterUptime free tier. |
 
 ---
@@ -79,7 +79,7 @@ Legend
 | 🟡 **Custom invoice templates** (HTML/CSS based) | mid | Differentiates from cookie-cutter tools. |
 | 🟡 **Inventory / products catalog** (so line items aren't always typed) | mid | Boutique businesses need this. |
 | 🔴 **Mobile app** (React Native / Capacitor wrapper) | large | "On the go" story. Often expected. |
-| 🟡 **Stripe Subscriptions billing for Invoicely itself** | mid | You need this to actually charge. Use Stripe Customer Portal. |
+| 🟡 **Stripe Subscriptions billing for Paidly itself** | mid | You need this to actually charge. Use Stripe Customer Portal. |
 
 ---
 
@@ -100,7 +100,7 @@ Legend
 If shipping 1 thing: **Stripe Connect "Pay invoice" link**.
 If shipping 3: **Pay link → Email PDF to client → Recurring invoices**. 
 
-Those three turn Invoicely from "invoice generator" into "get paid faster" — which is the actual job to be done.
+Those three turn Paidly from "invoice generator" into "get paid faster" — which is the actual job to be done.
 
 ---
 

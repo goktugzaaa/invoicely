@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useT } from "@/lib/i18n/context";
 
-const DEMO = { email: "demo@invoicely.app", password: "Demo1234!" };
+const DEMO = { email: "demo@paidly.app", password: "Demo1234!" };
 
 const schema = z.object({
   email: z.string().email("Invalid email"),
@@ -79,14 +79,24 @@ export function LoginForm() {
         {...register("email")}
         error={errors.email?.message}
       />
-      <Input
-        label={t.auth.password}
-        type="password"
-        autoComplete="current-password"
-        placeholder="••••••••"
-        {...register("password")}
-        error={errors.password?.message}
-      />
+      <div>
+        <Input
+          label={t.auth.password}
+          type="password"
+          autoComplete="current-password"
+          placeholder="••••••••"
+          {...register("password")}
+          error={errors.password?.message}
+        />
+        <div className="mt-1.5 text-right">
+          <a
+            href="/forgot-password"
+            className="text-xs font-medium text-brand-600 hover:text-brand-700"
+          >
+            {t.auth.forgotLink}
+          </a>
+        </div>
+      </div>
       {serverError && (
         <div className="rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-700">{serverError}</div>
       )}

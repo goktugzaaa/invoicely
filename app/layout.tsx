@@ -13,12 +13,12 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Invoicely — Invoices & clients in one place",
-    template: "%s · Invoicely",
+    default: "Paidly — Invoices & clients in one place",
+    template: "%s · Paidly",
   },
   description:
     "A lightweight workspace for freelancers and small agencies. Track clients, send PDF invoices, and watch revenue land — without spreadsheets.",
-  applicationName: "Invoicely",
+  applicationName: "Paidly",
   keywords: [
     "invoice",
     "freelancer",
@@ -27,17 +27,17 @@ export const metadata: Metadata = {
     "pdf invoice",
     "billing",
   ],
-  authors: [{ name: "Invoicely" }],
+  authors: [{ name: "Paidly" }],
   openGraph: {
-    title: "Invoicely — Invoices & clients in one place",
+    title: "Paidly — Invoices & clients in one place",
     description:
       "Track clients, send PDF invoices, get paid. Built for freelancers and small agencies.",
     type: "website",
-    siteName: "Invoicely",
+    siteName: "Paidly",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Invoicely — Invoices & clients in one place",
+    title: "Paidly — Invoices & clients in one place",
     description:
       "Track clients, send PDF invoices, get paid. Built for freelancers and small agencies.",
   },

@@ -32,7 +32,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           {children}
         </div>
         <p className="mt-6 text-center text-xs text-slate-400">
-          © 2026 Invoicely · <span className="text-slate-300">Built for the people who do the work.</span>
+          © 2026 Paidly · <span className="text-slate-300">Built for the people who do the work.</span>
         </p>
       </div>
     </main>

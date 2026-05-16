@@ -21,7 +21,7 @@ export function LogoMark({ size = "md", className }: { size?: Size; className?: 
     >
       <Image
         src="/logo.png"
-        alt="Invoicely"
+        alt="Paidly"
         width={px * 3}
         height={px * 3}
         priority
@@ -47,7 +47,7 @@ export function Brand({
       <LogoMark size={size} />
       {showText && (
         <span className={cn("font-semibold tracking-tight text-slate-900", textSizes[size])}>
-          Invoicely
+          Paidly
         </span>
       )}
     </span>

@@ -3,7 +3,7 @@ import type { Locale } from "@/lib/i18n/dict";
 /**
  * Country presets for invoice localization.
  *
- * Note: Invoicely is NOT a substitute for country-specific government
+ * Note: Paidly is NOT a substitute for country-specific government
  * e-invoicing systems (Italy SDI, Mexico CFDI, Brazil NF-e, Turkey e-Fatura,
  * Spain Verifactu, India GST e-invoicing, etc.). It produces clean,
  * client-acceptable PDF invoices for general freelance/agency use.

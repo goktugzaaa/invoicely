@@ -76,7 +76,7 @@ export default async function DashboardPage({
         <div className="relative">
           <p className="mb-1 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-brand-600">
             <span className="h-1.5 w-1.5 rounded-full bg-brand-600" />
-            Invoicely
+            Paidly
           </p>
           <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
             {t.dashboard.welcome(displayName)}
