@@ -62,7 +62,7 @@ export function Sidebar() {
       {/* footer brand mark */}
       <div className="absolute inset-x-0 bottom-0 border-t border-slate-100 px-5 py-3">
         <p className="text-[10px] uppercase tracking-widest text-slate-400">
-          Vellum <span className="text-slate-300">·</span> v1.0
+          Nib <span className="text-slate-300">·</span> v1.0
         </p>
       </div>
     </aside>

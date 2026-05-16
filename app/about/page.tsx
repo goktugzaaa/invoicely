@@ -6,7 +6,7 @@ import { getDict } from "@/lib/i18n/server";
 
 export const metadata = {
   title: "About",
-  description: "About the person who built Vellum.",
+  description: "About the person who built Nib.",
 };
 
 export default async function AboutPage() {
@@ -54,7 +54,7 @@ export default async function AboutPage() {
 
         <div className="prose prose-slate mt-10 max-w-none space-y-6 text-base leading-relaxed text-slate-700">
           <p>
-            I freelance. I built Vellum because the thing I was using kept asking me to upgrade
+            I freelance. I built Nib because the thing I was using kept asking me to upgrade
             to see the &ldquo;overdue&rdquo; filter — while I was, in fact, owed $4k from a client
             who&apos;d gone quiet for 47 days.
           </p>
@@ -68,7 +68,7 @@ export default async function AboutPage() {
             12-person finance team — it isn&apos;t. And that&apos;s on purpose.
           </p>
           <p>
-            Vellum is open source (MIT). The code lives on GitHub. The whole thing was built in a
+            Nib is open source (MIT). The code lives on GitHub. The whole thing was built in a
             couple of weeks of evenings. I&apos;m shipping in public — what&apos;s broken, what&apos;s
             next, what I&apos;ve decided to never do.
           </p>

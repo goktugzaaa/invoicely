@@ -5,7 +5,7 @@ import { getDict } from "@/lib/i18n/server";
 
 export const metadata = {
   title: "Uses",
-  description: "Tools, gear and stack behind Vellum.",
+  description: "Tools, gear and stack behind Nib.",
 };
 
 interface Group {
@@ -15,7 +15,7 @@ interface Group {
 
 const STACK: Group[] = [
   {
-    label: "How Vellum is built",
+    label: "How Nib is built",
     items: [
       { name: "Next.js 15", note: "App Router, server actions, server components." },
       { name: "Supabase", note: "Postgres, Auth, Storage, RLS — multi-tenant out of the box." },
@@ -41,7 +41,7 @@ const STACK: Group[] = [
     items: [
       { name: "Wise", note: "Multi-currency receiving." },
       { name: "Notion", note: "Docs + meeting notes." },
-      { name: "Vellum", note: "(Yes, really. Eating my own.)" },
+      { name: "Nib", note: "(Yes, really. Eating my own.)" },
     ],
   },
 ];

@@ -12,7 +12,7 @@ const textSize: Record<Size, string> = {
 };
 
 /**
- * Vellum mark — folded page corner motif (page / folio leaf).
+ * Nib mark — calligraphy pen nib silhouette inside a rounded navy square.
  * Pure inline SVG; no external image asset.
  */
 export function LogoMark({ size = "md", className }: { size?: Size; className?: string }) {
@@ -26,26 +26,13 @@ export function LogoMark({ size = "md", className }: { size?: Size; className?: 
       className={cn("shrink-0", className)}
       aria-hidden
     >
-      {/* page body */}
-      <path
-        d="M6 4 H28 L34 10 V34 a2 2 0 0 1 -2 2 H6 a2 2 0 0 1 -2 -2 V6 a2 2 0 0 1 2 -2 z"
-        fill="#0c1a3a"
-      />
-      {/* folded corner — cyan accent */}
-      <path d="M28 4 V10 H34 z" fill="#22d3ee" />
-      <path d="M28 4 L34 10" stroke="#0c1a3a" strokeWidth="0.6" />
-      {/* serif italic F */}
-      <text
-        x="11"
-        y="28"
-        fontFamily="var(--font-serif), Georgia, serif"
-        fontSize="20"
-        fontStyle="italic"
-        fontWeight="400"
-        fill="#ffffff"
-      >
-        F
-      </text>
+      <rect x="2" y="2" width="36" height="36" rx="8" fill="#0c1a3a" />
+      {/* nib body — tapered downward */}
+      <path d="M14 10 H26 L30 22 L20 34 L10 22 Z" fill="#ffffff" />
+      {/* center slit */}
+      <line x1="20" y1="14" x2="20" y2="30" stroke="#0c1a3a" strokeWidth="1.2" strokeLinecap="round" />
+      {/* ink dot tip — cyan accent */}
+      <circle cx="20" cy="33" r="1.8" fill="#22d3ee" />
     </svg>
   );
 }
@@ -66,7 +53,7 @@ export function Brand({
       <LogoMark size={size} />
       {showText && (
         <span className={cn("font-serif italic tracking-tight text-slate-900", textSize[size])}>
-          Vellum
+          Nib
         </span>
       )}
     </span>

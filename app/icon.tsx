@@ -16,25 +16,14 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 22,
+          color: "white",
+          fontSize: 26,
+          fontWeight: 700,
           fontStyle: "italic",
           fontFamily: "Georgia, serif",
-          color: "white",
-          position: "relative",
         }}
       >
-        F
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            width: 9,
-            height: 9,
-            background: "#22d3ee",
-            clipPath: "polygon(100% 0, 0 0, 100% 100%)",
-          }}
-        />
+        N
       </div>
     ),
     size

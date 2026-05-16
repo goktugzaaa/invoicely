@@ -1,7 +1,7 @@
 /**
  * Country presets for invoice localization.
  *
- * Scope: Vellum produces casual freelance / small-agency invoices that are
+ * Scope: Nib produces casual freelance / small-agency invoices that are
  * accepted in jurisdictions where government e-invoicing systems are NOT
  * mandatory for our target users (freelancers and small businesses below
  * any e-invoicing threshold).

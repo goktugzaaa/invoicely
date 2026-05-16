@@ -1,6 +1,6 @@
 <div align="center">
 
-# Vellum
+# Nib
 
 **A production-quality invoice & client tracker SaaS for freelancers and small agencies.**
 
@@ -36,7 +36,7 @@ A real SaaS — not a tutorial project. Built end-to-end with the modern Next.js
 |---|---|
 | URL | https://invoicely-psi.vercel.app |
 | One-click demo | https://invoicely-psi.vercel.app/login?demo=1 |
-| Email | `demo@vellum.app` |
+| Email | `demo@nib.app` |
 | Password | `Demo1234!` |
 
 Demo workspace ships pre-loaded with 8 clients, 11 invoices spanning 7 months, multiple currencies (USD/EUR/GBP/TRY), and the full activity timeline.

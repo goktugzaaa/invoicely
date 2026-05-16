@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { useT } from "@/lib/i18n/context";
 
-const DEMO = { email: "demo@vellum.app", password: "Demo1234!" };
+const DEMO = { email: "demo@nib.app", password: "Demo1234!" };
 
 const schema = z.object({
   email: z.string().email("Invalid email"),
