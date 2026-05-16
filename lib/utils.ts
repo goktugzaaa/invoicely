@@ -29,10 +29,20 @@ export function isOverdue(dueDate: string | null, status: string) {
   return new Date(dueDate) < new Date();
 }
 
-export function timeAgo(date: string | Date, locale: "en" | "tr" = "en"): string {
+const LOCALE_TAGS: Record<string, string> = {
+  en: "en-US",
+  tr: "tr-TR",
+  de: "de-DE",
+  es: "es-ES",
+  fr: "fr-FR",
+  nl: "nl-NL",
+};
+
+export function timeAgo(date: string | Date, locale: string = "en"): string {
   const d = typeof date === "string" ? new Date(date) : date;
   const diffSec = Math.round((Date.now() - d.getTime()) / 1000);
-  const rtf = new Intl.RelativeTimeFormat(locale === "tr" ? "tr-TR" : "en-US", { numeric: "auto" });
+  const tag = LOCALE_TAGS[locale] ?? "en-US";
+  const rtf = new Intl.RelativeTimeFormat(tag, { numeric: "auto" });
   if (diffSec < 60) return rtf.format(-diffSec, "second");
   const min = Math.round(diffSec / 60);
   if (min < 60) return rtf.format(-min, "minute");
