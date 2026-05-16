@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Brand } from "@/components/Logo";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { getDict } from "@/lib/i18n/server";
@@ -34,10 +35,16 @@ export default async function AboutPage() {
           One pissed-off invoice.
         </h1>
 
-        <div className="mt-10 flex items-center gap-4">
-          {/* Avatar placeholder — swap with real photo when ready */}
-          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#0c1a3a] text-2xl font-semibold text-white">
-            G
+        <div className="mt-10 flex items-center gap-5">
+          <span className="relative h-20 w-20 shrink-0 overflow-hidden rounded-full ring-2 ring-slate-200">
+            <Image
+              src="/me.jpeg"
+              alt="Göktuğ Zaimoğlu"
+              fill
+              sizes="80px"
+              className="object-cover"
+              priority
+            />
           </span>
           <div>
             <p className="text-lg font-semibold">Göktuğ Zaimoğlu</p>
