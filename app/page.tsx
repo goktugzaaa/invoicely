@@ -48,29 +48,49 @@ export default async function LandingPage() {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#f8f7f4] text-slate-900 selection:bg-slate-900 selection:text-white">
-      {/* Top nav */}
-      <header className="sticky top-0 z-40 border-b border-slate-900/10 bg-[#f8f7f4]/85 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Brand size="md" href="/" />
-          <nav className="hidden items-center gap-7 text-xs font-medium uppercase tracking-widest text-slate-700 md:flex">
-            <a href="#features" className="hover:text-slate-900">{t.landing.navFeatures}</a>
-            <a href="#countries" className="hover:text-slate-900">{t.landing.navCountries}</a>
-            <a href="#faq" className="hover:text-slate-900">{t.landing.navFaq}</a>
-          </nav>
-          <div className="flex items-center gap-4">
-            <LanguageSwitcher />
-            <Link
-              href="/login"
-              className="hidden text-xs font-medium uppercase tracking-widest text-slate-700 hover:text-slate-900 sm:inline-block"
-            >
-              {t.landing.signIn}
-            </Link>
-            <Link
-              href="/signup"
-              className="hidden rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition-colors hover:bg-slate-700 sm:inline-block"
-            >
-              {t.landing.getStarted}
-            </Link>
+      {/* Top nav — editorial minimal */}
+      <header className="sticky top-0 z-40 bg-[#f8f7f4]/90 backdrop-blur-md">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="grid grid-cols-2 items-center border-b border-slate-900/10 py-5 md:grid-cols-3">
+            {/* Left: brand */}
+            <div className="flex items-center">
+              <Brand size="sm" href="/" />
+            </div>
+
+            {/* Center: nav (md+) */}
+            <nav className="hidden items-center justify-center gap-8 font-mono text-[11px] uppercase tracking-[0.25em] text-slate-600 md:flex">
+              <a href="#features" className="transition-colors hover:text-slate-900">
+                {t.landing.navFeatures}
+              </a>
+              <a href="#countries" className="transition-colors hover:text-slate-900">
+                {t.landing.navCountries}
+              </a>
+              <a href="#faq" className="transition-colors hover:text-slate-900">
+                {t.landing.navFaq}
+              </a>
+            </nav>
+
+            {/* Right: actions */}
+            <div className="flex items-center justify-end gap-5">
+              <div className="hidden md:block">
+                <LanguageSwitcher />
+              </div>
+              <Link
+                href="/login"
+                className="hidden font-mono text-[11px] uppercase tracking-[0.25em] text-slate-600 transition-colors hover:text-slate-900 sm:inline-block"
+              >
+                {t.landing.signIn}
+              </Link>
+              <Link
+                href="/signup"
+                className="group inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.25em] text-slate-900"
+              >
+                <span className="border-b border-slate-900 pb-0.5">
+                  {t.landing.getStarted}
+                </span>
+                <span className="transition-transform group-hover:translate-x-0.5">→</span>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
