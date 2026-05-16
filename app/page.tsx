@@ -4,7 +4,6 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Mockup } from "@/components/landing/Mockup";
 import { FaqAccordion } from "@/components/landing/FaqAccordion";
 import { Marquee } from "@/components/landing/Marquee";
-import { StatCounter } from "@/components/landing/StatCounter";
 import { Reveal } from "@/components/landing/Reveal";
 import { COUNTRIES } from "@/lib/countries";
 import { LOCALES, LOCALE_LABELS } from "@/lib/i18n/dict";
@@ -35,12 +34,6 @@ export default async function LandingPage() {
     [t.landing.cmp1, t.landing.cmp2, t.landing.cmp3],
     [t.landing.cmp4, t.landing.cmp5, t.landing.cmp6],
     [t.landing.cmp7, t.landing.cmp8, t.landing.cmp9],
-  ];
-
-  const testimonials = [
-    { q: t.landing.t1Quote, n: t.landing.t1Name, r: t.landing.t1Role },
-    { q: t.landing.t2Quote, n: t.landing.t2Name, r: t.landing.t2Role },
-    { q: t.landing.t3Quote, n: t.landing.t3Name, r: t.landing.t3Role },
   ];
 
   const faqs = [
@@ -167,7 +160,7 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* STATS */}
+      {/* BUILD STATUS — honest, not fake metrics */}
       <section className="border-b border-slate-900/10 bg-[#f8f7f4] py-24">
         <div className="mx-auto max-w-7xl px-6">
           <Reveal>
@@ -175,18 +168,19 @@ export default async function LandingPage() {
               — {t.landing.statBlockEyebrow}
             </p>
           </Reveal>
-          <div className="grid grid-cols-2 gap-12 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { v: 23, suffix: "", label: t.landing.statCountries },
-              { v: 16, suffix: "", label: t.landing.statCurrencies },
-              { v: 60, suffix: "s", label: t.landing.statSeconds },
-              { v: 100, suffix: "%", label: t.landing.statOpenSource },
+              { big: "23", small: t.landing.statCountries, note: t.landing.statCountriesNote },
+              { big: "v.01", small: t.landing.statVersion, note: t.landing.statVersionNote },
+              { big: "0", small: t.landing.statPayingUsers, note: t.landing.statPayingUsersNote },
+              { big: "MIT", small: t.landing.statLicense, note: t.landing.statLicenseNote },
             ].map((s, i) => (
               <Reveal key={i} delay={i * 100} className="border-t border-slate-900 pt-4">
-                <div className="font-sans text-6xl font-semibold tracking-[-0.04em] sm:text-7xl">
-                  <StatCounter to={s.v} suffix={s.suffix} />
+                <div className="font-sans text-5xl font-semibold tracking-[-0.04em] sm:text-6xl">
+                  {s.big}
                 </div>
-                <p className="mt-2 max-w-[12rem] text-sm text-slate-600">{s.label}</p>
+                <p className="mt-2 text-sm font-medium text-slate-900">{s.small}</p>
+                <p className="mt-1 max-w-[14rem] text-xs text-slate-500">{s.note}</p>
               </Reveal>
             ))}
           </div>
@@ -348,36 +342,30 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {/* TESTIMONIALS — editorial oversized */}
+      {/* BUILT IN PUBLIC — founder honesty */}
       <section className="bg-[#f8f7f4] py-32">
-        <div className="mx-auto max-w-7xl px-6">
-          <Reveal>
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-6 lg:grid-cols-12">
+          <Reveal className="lg:col-span-5">
             <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.4em] text-slate-500">
-              — {t.landing.sectionTestiEyebrow}
+              — {t.landing.publicEyebrow}
             </p>
-          </Reveal>
-          <Reveal delay={100}>
-            <h2 className="max-w-3xl text-4xl font-semibold leading-[1.05] tracking-[-0.025em] sm:text-6xl">
-              {t.landing.sectionTestiTitle}
+            <h2 className="text-4xl font-semibold leading-[1.05] tracking-[-0.025em] sm:text-5xl">
+              {t.landing.publicTitle}
             </h2>
           </Reveal>
-
-          <div className="mt-16 grid grid-cols-1 gap-10 md:grid-cols-3">
-            {testimonials.map((tm, i) => (
-              <Reveal key={tm.n} delay={i * 100}>
-                <figure className="border-t border-slate-900 pt-6">
-                  <blockquote className="font-serif text-2xl leading-[1.2] tracking-tight text-slate-900 sm:text-3xl">
-                    &ldquo;{tm.q}&rdquo;
-                  </blockquote>
-                  <figcaption className="mt-6 font-mono text-[11px] uppercase tracking-widest text-slate-500">
-                    <span className="font-semibold text-slate-900">{tm.n}</span>
-                    <span className="mx-2">·</span>
-                    {tm.r}
-                  </figcaption>
-                </figure>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal delay={100} className="space-y-6 text-base leading-relaxed text-slate-700 lg:col-span-7">
+            <p>{t.landing.publicBody1}</p>
+            <p>{t.landing.publicBody2}</p>
+            <p className="font-serif text-xl italic text-slate-600">{t.landing.publicSig}</p>
+            <div className="flex flex-wrap gap-3 pt-2 font-mono text-[11px] uppercase tracking-widest">
+              <a href="https://github.com/goktugzaaa/paidly" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border-b border-slate-900 pb-0.5 text-slate-900 hover:opacity-70">
+                GitHub →
+              </a>
+              <a href="https://twitter.com/goktugzaaa" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 border-b border-slate-900 pb-0.5 text-slate-900 hover:opacity-70">
+                Twitter / X →
+              </a>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -466,6 +454,14 @@ export default async function LandingPage() {
             </p>
             <p className="font-serif text-2xl italic text-slate-900">v.01</p>
             <p className="mt-2 text-sm text-slate-600">{t.landing.footerMade}</p>
+            <div className="mt-4 flex gap-4 text-xs font-medium uppercase tracking-widest text-slate-700">
+              <a href="https://github.com/goktugzaaa/paidly" target="_blank" rel="noreferrer" className="hover:text-slate-900">
+                GitHub ↗
+              </a>
+              <a href="https://twitter.com/goktugzaaa" target="_blank" rel="noreferrer" className="hover:text-slate-900">
+                X ↗
+              </a>
+            </div>
           </div>
         </div>
         <div className="border-t border-slate-900/10">
