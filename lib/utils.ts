@@ -18,10 +18,18 @@ export function formatCurrency(value: number | string, currency = "USD") {
   }
 }
 
-export function formatDate(d: string | Date | null | undefined) {
+export function formatDate(
+  d: string | Date | null | undefined,
+  locale: string = "en-US"
+) {
   if (!d) return "—";
   const date = typeof d === "string" ? new Date(d) : d;
-  return date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+  const tag = LOCALE_TAGS[locale] ?? locale;
+  try {
+    return date.toLocaleDateString(tag, { year: "numeric", month: "short", day: "numeric" });
+  } catch {
+    return date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+  }
 }
 
 export function isOverdue(dueDate: string | null, status: string) {

@@ -87,5 +87,16 @@ export function invoiceWord(countryCode?: string | null): string {
   return getCountry(countryCode)?.invoiceWord ?? "Invoice";
 }
 
+/**
+ * BCP 47 locale tag for date/number formatting per country.
+ * en-US, en-GB, de-DE, tr-TR, fr-FR, etc.
+ * Falls back to "en-US" when country unknown.
+ */
+export function getDateLocale(countryCode?: string | null): string {
+  const c = getCountry(countryCode);
+  if (!c) return "en-US";
+  return `${c.locale}-${c.code}`;
+}
+
 export const SUPPORTED_COUNTRIES = COUNTRIES.filter((c) => c.supported);
 export const RESTRICTED_COUNTRIES = COUNTRIES.filter((c) => !c.supported);

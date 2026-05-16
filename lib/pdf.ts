@@ -1,6 +1,6 @@
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFImage, type PDFPage } from "pdf-lib";
 import type { InvoiceWithItems, Profile, Client } from "@/types/db";
-import { invoiceWord, getCountry } from "@/lib/countries";
+import { invoiceWord, getCountry, getDateLocale } from "@/lib/countries";
 
 const COLOR = {
   text: rgb(0.12, 0.16, 0.23),
@@ -10,17 +10,21 @@ const COLOR = {
   bg: rgb(0.96, 0.97, 1),
 };
 
-function fmtMoney(n: number, ccy: string) {
+function fmtMoney(n: number, ccy: string, locale = "en-US") {
   try {
-    return new Intl.NumberFormat("en-US", { style: "currency", currency: ccy }).format(n);
+    return new Intl.NumberFormat(locale, { style: "currency", currency: ccy }).format(n);
   } catch {
     return `${ccy} ${n.toFixed(2)}`;
   }
 }
 
-function fmtDate(d: string | null) {
+function fmtDate(d: string | null, locale = "en-US") {
   if (!d) return "—";
-  return new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+  try {
+    return new Date(d).toLocaleDateString(locale, { year: "numeric", month: "short", day: "numeric" });
+  } catch {
+    return new Date(d).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+  }
 }
 
 export interface PdfOpts {
@@ -49,6 +53,7 @@ export async function renderInvoicePdf(
   const sellerEmail = opts.profile?.email || opts.fallbackEmail || "";
   const sellerCountry = getCountry(opts.profile?.country);
   const invoiceTitle = (invoiceWord(opts.profile?.country) || "INVOICE").toUpperCase();
+  const locale = getDateLocale(opts.profile?.country);
 
   // Try embed logo
   let logo: PDFImage | null = null;
@@ -162,8 +167,8 @@ export async function renderInvoicePdf(
   // Meta
   const metaTop = Math.min(sy, by) - 10;
   const metaRows: [string, string][] = [
-    ["Issue date", fmtDate(invoice.issue_date)],
-    ["Due date", fmtDate(invoice.due_date)],
+    ["Issue date", fmtDate(invoice.issue_date, locale)],
+    ["Due date", fmtDate(invoice.due_date, locale)],
   ];
   if (invoice.po_number) metaRows.push(["PO / Reference", invoice.po_number]);
   metaRows.push(["Status", invoice.status.toUpperCase()]);
@@ -211,8 +216,8 @@ export async function renderInvoicePdf(
       color: COLOR.text,
     });
     drawRight(page, font, String(Number(it.quantity)), colX.qty + 40, y, 10, COLOR.text);
-    drawRight(page, font, fmtMoney(Number(it.unit_price), ccy), colX.unit + 80, y, 10, COLOR.text);
-    drawRight(page, font, fmtMoney(Number(it.total_price), ccy), colX.total, y, 10, COLOR.text);
+    drawRight(page, font, fmtMoney(Number(it.unit_price), ccy, locale), colX.unit + 80, y, 10, COLOR.text);
+    drawRight(page, font, fmtMoney(Number(it.total_price), ccy, locale), colX.total, y, 10, COLOR.text);
     y -= 20;
   });
 
@@ -233,16 +238,16 @@ export async function renderInvoicePdf(
   const taxLabel = sellerCountry?.taxLabel || "Tax";
 
   drawRight(page, font, "Subtotal", totalsX + 120, y - 4, 10, COLOR.muted);
-  drawRight(page, font, fmtMoney(subtotal, ccy), width - margin, y - 4, 10, COLOR.text);
+  drawRight(page, font, fmtMoney(subtotal, ccy, locale), width - margin, y - 4, 10, COLOR.text);
   y -= 16;
   if (discount > 0) {
     drawRight(page, font, "Discount", totalsX + 120, y - 4, 10, COLOR.muted);
-    drawRight(page, font, `-${fmtMoney(discount, ccy)}`, width - margin, y - 4, 10, COLOR.text);
+    drawRight(page, font, `-${fmtMoney(discount, ccy, locale)}`, width - margin, y - 4, 10, COLOR.text);
     y -= 16;
   }
   if (taxRate > 0) {
     drawRight(page, font, `${taxLabel} (${taxRate}%)`, totalsX + 120, y - 4, 10, COLOR.muted);
-    drawRight(page, font, fmtMoney(taxAmount, ccy), width - margin, y - 4, 10, COLOR.text);
+    drawRight(page, font, fmtMoney(taxAmount, ccy, locale), width - margin, y - 4, 10, COLOR.text);
     y -= 16;
   }
   page.drawLine({
@@ -252,7 +257,7 @@ export async function renderInvoicePdf(
     color: COLOR.line,
   });
   drawRight(page, bold, "Total due", totalsX + 120, y - 14, 11, COLOR.muted);
-  drawRight(page, bold, fmtMoney(Number(invoice.total_amount), ccy), width - margin, y - 14, 14, COLOR.brand);
+  drawRight(page, bold, fmtMoney(Number(invoice.total_amount), ccy, locale), width - margin, y - 14, 14, COLOR.brand);
 
   // Payment block (bank info from profile + payment_terms)
   let py = y - 50;
