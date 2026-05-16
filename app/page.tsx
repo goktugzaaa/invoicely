@@ -222,26 +222,19 @@ export default async function LandingPage() {
           {COUNTRIES.map((c) => (
             <div
               key={c.code}
-              className={
-                "flex items-center gap-2 rounded-lg border bg-white px-3 py-2 text-sm shadow-sm " +
-                (c.supported ? "border-slate-200" : "border-amber-200 bg-amber-50/40")
-              }
-              title={c.supported ? `${c.taxLabel} ${c.taxRate}% · ${c.currency}` : "Local e-invoicing required"}
+              className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm"
+              title={`${c.taxLabel} ${c.taxRate}% · ${c.currency}`}
             >
               <span className="text-base leading-none">{c.flag}</span>
               <span className="flex-1 truncate font-medium text-slate-800">{c.name}</span>
               <span className="font-mono text-xs text-slate-400">{c.currency}</span>
-              {!c.supported && (
-                <span className="text-amber-600" aria-label="Local e-invoicing required">⚠</span>
-              )}
             </div>
           ))}
         </div>
 
-        {/* Disclaimer */}
-        <div className="mx-auto mt-8 max-w-3xl rounded-2xl border border-amber-200 bg-amber-50/60 p-5 text-sm text-amber-900">
-          <p className="font-semibold">⚠ {t.landing.countriesNote.split("—")[0].trim()}</p>
-          <p className="mt-1 text-amber-800">{t.landing.countriesNote}</p>
+        {/* Note */}
+        <div className="mx-auto mt-8 max-w-3xl rounded-2xl border border-slate-200 bg-slate-50/60 p-5 text-sm text-slate-700">
+          <p>{t.landing.countriesNote}</p>
         </div>
 
         {/* Languages */}

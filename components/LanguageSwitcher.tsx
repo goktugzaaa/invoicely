@@ -9,10 +9,6 @@ import { cn } from "@/lib/utils";
 const FLAGS: Record<Locale, string> = {
   en: "🇬🇧",
   tr: "🇹🇷",
-  de: "🇩🇪",
-  es: "🇪🇸",
-  fr: "🇫🇷",
-  nl: "🇳🇱",
 };
 
 export function LanguageSwitcher() {

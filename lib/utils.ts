@@ -5,7 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const SUPPORTED_CURRENCIES = ["USD", "EUR", "GBP", "TRY", "CAD", "AUD", "JPY", "CHF"] as const;
+export const SUPPORTED_CURRENCIES = [
+  "USD", "EUR", "GBP", "TRY", "CAD", "AUD", "NZD",
+  "CHF", "SEK", "NOK", "DKK", "PLN", "ZAR", "SGD", "HKD",
+  "JPY",
+] as const;
 export type Currency = (typeof SUPPORTED_CURRENCIES)[number];
 
 export function formatCurrency(value: number | string, currency = "USD") {

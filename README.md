@@ -72,7 +72,7 @@ Demo workspace ships pre-loaded with 8 clients, 11 invoices spanning 7 months, m
 ### Invoices
 - Auto-numbered per user (`INV-0001`, `INV-0002` …) via Postgres RPC
 - Multi-line items with live total calculation
-- 8 supported currencies (USD, EUR, GBP, TRY, CAD, AUD, JPY, CHF) with locale formatting
+- 16 supported currencies with locale-aware formatting (USD/EUR/GBP/TRY/CAD/AUD/NZD/CHF/SEK/NOK/DKK/PLN/ZAR/SGD/HKD/JPY)
 - Per-invoice tax %, discount amount, breakdown displayed everywhere (form, detail, PDF)
 - Status pipeline with one-click transitions (`Mark sent`, `Mark paid`)
 - Audit timestamps (`sent_at`, `paid_at`) populated automatically
