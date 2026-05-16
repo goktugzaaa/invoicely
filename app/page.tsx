@@ -59,7 +59,7 @@ export default async function LandingPage() {
           <Brand size="md" href="/" />
           <nav className="hidden items-center gap-7 text-xs font-medium uppercase tracking-widest text-slate-700 md:flex">
             <a href="#features" className="hover:text-slate-900">{t.landing.navFeatures}</a>
-            <a href="#countries" className="hover:text-slate-900">Countries</a>
+            <a href="#countries" className="hover:text-slate-900">{t.landing.navCountries}</a>
             <a href="#faq" className="hover:text-slate-900">{t.landing.navFaq}</a>
           </nav>
           <div className="flex items-center gap-3">
@@ -230,7 +230,7 @@ export default async function LandingPage() {
           </Reveal>
           <Reveal delay={100}>
             <h2 className="max-w-4xl text-4xl font-semibold leading-[1.05] tracking-[-0.025em] sm:text-6xl">
-              <span className="font-serif italic text-slate-500">Three</span> workflows. <span className="font-serif italic text-slate-500">One</span> sharp tool.
+              {t.landing.sectionPersonasTitle}
             </h2>
           </Reveal>
           <div className="mt-16 grid grid-cols-1 gap-12 md:grid-cols-3">
@@ -251,7 +251,7 @@ export default async function LandingPage() {
         <div className="mx-auto max-w-7xl px-6">
           <Reveal>
             <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.4em] text-slate-500">
-              — Coverage
+              — {t.landing.coverageEyebrow}
             </p>
           </Reveal>
           <Reveal delay={100}>
@@ -440,7 +440,7 @@ export default async function LandingPage() {
             </p>
             <ul className="space-y-2 text-sm text-slate-700">
               <li><a href="#features" className="hover:text-slate-900">{t.landing.navFeatures}</a></li>
-              <li><a href="#countries" className="hover:text-slate-900">Countries</a></li>
+              <li><a href="#countries" className="hover:text-slate-900">{t.landing.navCountries}</a></li>
               <li><a href="#faq" className="hover:text-slate-900">{t.landing.navFaq}</a></li>
               <li><Link href="/login" className="hover:text-slate-900">{t.landing.signIn}</Link></li>
             </ul>

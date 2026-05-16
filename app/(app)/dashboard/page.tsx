@@ -78,7 +78,9 @@ export default async function DashboardPage({
             — {t.dashboard.title}
           </p>
           <h1 className="text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-4xl">
-            Welcome back, <span className="font-serif italic text-slate-600">{displayName}</span>.
+            {t.dashboard.welcomePrefix}{" "}
+            <span className="font-serif italic text-slate-600">{displayName}</span>
+            {t.dashboard.welcomeSuffix}
           </h1>
           <p className="mt-2 max-w-md text-sm text-slate-500">{t.dashboard.welcomeSub}</p>
         </div>

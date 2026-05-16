@@ -16,7 +16,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader eyebrow="Workspace" title={t.settings.title} description={t.settings.desc} />
+      <PageHeader eyebrow={t.landing.eyebrowWorkspace} title={t.settings.title} description={t.settings.desc} />
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
