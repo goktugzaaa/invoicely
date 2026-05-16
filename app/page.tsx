@@ -62,8 +62,14 @@ export default async function LandingPage() {
             <a href="#countries" className="hover:text-slate-900">{t.landing.navCountries}</a>
             <a href="#faq" className="hover:text-slate-900">{t.landing.navFaq}</a>
           </nav>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <LanguageSwitcher />
+            <Link
+              href="/login"
+              className="hidden text-xs font-medium uppercase tracking-widest text-slate-700 hover:text-slate-900 sm:inline-block"
+            >
+              {t.landing.signIn}
+            </Link>
             <Link
               href="/signup"
               className="hidden rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition-colors hover:bg-slate-700 sm:inline-block"

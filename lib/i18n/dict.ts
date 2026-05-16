@@ -533,9 +533,9 @@ const tr: typeof en = {
 
     // Editorial v2
     heroEyebrow: "2026 · BAĞIMSIZ · NET",
-    heroLine1: "Fatura kes,",
-    heroLine2: "lafı",
-    heroLine3: "uzatmadan.",
+    heroLine1: "Müşteriler",
+    heroLine2: "ve faturalar,",
+    heroLine3: "tek bir yerde.",
     heroDeck: "Çoğu fatura aracı muhasebeciye göre yapılmış. Biz, işini yapan kişiye göre yaptık. Aç, kes, gönder — ödeme gelsin.",
     heroPrimary: "Canlı demoyu gör",
     heroSecondary: "Ücretsiz hesap aç",
@@ -577,7 +577,7 @@ const tr: typeof en = {
     ctaBtnPrimary: "Demoyu dene",
     ctaBtnSecondary: "Hesap oluştur",
 
-    footerTagline: "Fatura kesmek dert olmasın.",
+    footerTagline: "Müşteriler ve faturalar, tek bir yerde.",
     footerMade: "İstanbul'da yapıldı",
     footerLinks: "Site haritası",
     footerLegal: "Hukuki",
