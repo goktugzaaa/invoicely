@@ -264,6 +264,10 @@ const en = {
     faq4A: "Recurring invoices and Stripe payments are on the upcoming roadmap. The MVP focuses on speed and clarity first.",
     faq5Q: "Can my client pay the invoice online?",
     faq5A: "Online payments via Stripe are coming soon. Today, the PDF includes your bank details so payment is one bank transfer away.",
+    faq6Q: "Why is it called Paidly?",
+    faq6A: "Honest answer: 'Invoicely' was taken. Calendly / Bitly pattern, outcome-focused — you want to get paid, not to invoice.",
+    faq7Q: "Will you add [feature X]?",
+    faq7A: "Maybe. Open a GitHub issue. We deliberately ship less — if a feature would turn Paidly into an accounting platform, the answer is no.",
   },
   auth: {
     welcomeBack: "Welcome back",
@@ -775,6 +779,10 @@ const tr: typeof en = {
     faq4A: "Tekrarlayan fatura ve Stripe ödemeleri yakında. MVP önce hız ve sadelik üzerine.",
     faq5Q: "Müşterim faturayı online ödeyebilir mi?",
     faq5A: "Stripe ile online ödeme yakında. Bugün PDF'te banka bilgilerin yer alıyor — ödeme bir transfer uzaklıkta.",
+    faq6Q: "İsmi neden Paidly?",
+    faq6A: "Dürüst cevap: 'Invoicely' alınmıştı. Calendly / Bitly pattern, sonuç odaklı — fatura kesmek değil, ödeme almak istiyorsun.",
+    faq7Q: "[Şu özelliği] ekler misin?",
+    faq7A: "Belki. GitHub'da issue aç. Bilerek daha az feature gönderiyoruz — bir özellik Paidly'i muhasebe platformuna dönüştürecekse cevap hayır.",
   },
   auth: {
     welcomeBack: "Tekrar hoş geldin",

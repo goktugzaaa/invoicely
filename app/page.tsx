@@ -37,11 +37,13 @@ export default async function LandingPage() {
   ];
 
   const faqs = [
+    { q: t.landing.faq6Q, a: t.landing.faq6A },
     { q: t.landing.faq1Q, a: t.landing.faq1A },
     { q: t.landing.faq2Q, a: t.landing.faq2A },
     { q: t.landing.faq3Q, a: t.landing.faq3A },
     { q: t.landing.faq4Q, a: t.landing.faq4A },
     { q: t.landing.faq5Q, a: t.landing.faq5A },
+    { q: t.landing.faq7Q, a: t.landing.faq7A },
   ];
 
   return (
@@ -124,41 +126,6 @@ export default async function LandingPage() {
 
       {/* Marquee */}
       <Marquee text={t.landing.marqueeText} />
-
-      {/* MANIFESTO — full bleed dark */}
-      <section className="relative bg-[#0c1a3a] py-32 text-white sm:py-40">
-        {/* grid texture */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage:
-              "linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-        <div className="relative mx-auto max-w-6xl px-6">
-          <Reveal>
-            <p className="mb-10 font-mono text-[11px] uppercase tracking-[0.4em] text-white/60">
-              — {t.landing.manifestoEyebrow}
-            </p>
-          </Reveal>
-          <Reveal delay={100}>
-            <h2 className="text-4xl font-semibold leading-[1.05] tracking-[-0.025em] sm:text-6xl lg:text-7xl">
-              <span className="block">{t.landing.manifestoLine1}</span>
-              <span className="block font-serif italic text-white/70">{t.landing.manifestoLine2}</span>
-              <span className="mt-6 block">{t.landing.manifestoLine3}</span>
-              <span className="block">{t.landing.manifestoLine4}</span>
-              <span className="block font-serif italic text-white/70">{t.landing.manifestoLine5}</span>
-            </h2>
-          </Reveal>
-          <Reveal delay={200}>
-            <p className="mt-14 max-w-2xl text-lg leading-relaxed text-white/70">
-              {t.landing.manifestoBody}
-            </p>
-          </Reveal>
-        </div>
-      </section>
 
       {/* BUILD STATUS — honest, not fake metrics */}
       <section className="border-b border-slate-900/10 bg-[#f8f7f4] py-24">
@@ -458,6 +425,7 @@ export default async function LandingPage() {
               <li><a href="#countries" className="hover:text-slate-900">{t.landing.navCountries}</a></li>
               <li><a href="#faq" className="hover:text-slate-900">{t.landing.navFaq}</a></li>
               <li><Link href="/about" className="hover:text-slate-900">About</Link></li>
+              <li><Link href="/uses" className="hover:text-slate-900">Uses</Link></li>
               <li><Link href="/changelog" className="hover:text-slate-900">Changelog</Link></li>
               <li><Link href="/login" className="hover:text-slate-900">{t.landing.signIn}</Link></li>
             </ul>
