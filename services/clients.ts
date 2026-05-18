@@ -62,6 +62,39 @@ export async function getClient(userId: string, id: string): Promise<Client | nu
   return (data as Client) ?? null;
 }
 
+export interface ClientKpis {
+  active: number;
+  inactive: number;
+  totalRevenue: number;
+  outstanding: number;
+  currency: string;
+}
+
+export async function getClientKpis(userId: string): Promise<ClientKpis> {
+  const supabase = await createClient();
+  const [clientsRes, invRes] = await Promise.all([
+    supabase.from("clients").select("status").eq("user_id", userId),
+    supabase.from("invoices").select("total_amount, currency, status").eq("user_id", userId),
+  ]);
+  const cs = clientsRes.data ?? [];
+  const inv = invRes.data ?? [];
+  const active = cs.filter((c) => c.status === "active").length;
+  const inactive = cs.filter((c) => c.status === "inactive").length;
+  const totalRevenue = inv
+    .filter((r) => r.status === "paid")
+    .reduce((s, r) => s + Number(r.total_amount ?? 0), 0);
+  const outstanding = inv
+    .filter((r) => ["sent", "overdue"].includes(r.status as string))
+    .reduce((s, r) => s + Number(r.total_amount ?? 0), 0);
+  return {
+    active,
+    inactive,
+    totalRevenue,
+    outstanding,
+    currency: (inv[0]?.currency as string) || "USD",
+  };
+}
+
 export async function getClientInvoices(userId: string, clientId: string) {
   const supabase = await createClient();
   const { data, error } = await supabase

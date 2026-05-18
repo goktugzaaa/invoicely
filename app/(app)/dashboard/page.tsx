@@ -15,8 +15,11 @@ import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
 import { Onboarding } from "@/components/dashboard/Onboarding";
 import { TopClients } from "@/components/dashboard/TopClients";
 import { ActionItems } from "@/components/dashboard/ActionItems";
+import { StatusKpiStrip } from "@/components/invoices/StatusKpiStrip";
 import { formatCurrency, formatDate, cn } from "@/lib/utils";
 import { getDict } from "@/lib/i18n/server";
+import type { InvoiceStatus } from "@/types/db";
+import type { StatusBucket } from "@/services/invoices";
 
 export const dynamic = "force-dynamic";
 
@@ -56,6 +59,17 @@ export default async function DashboardPage({
     all: "",
   }[range];
 
+  // Reshape stats.statuses (array) → Record<InvoiceStatus, StatusBucket> for StatusKpiStrip
+  const byStatus: Record<InvoiceStatus, StatusBucket> = {
+    draft: { count: 0, amount: 0 },
+    sent: { count: 0, amount: 0 },
+    paid: { count: 0, amount: 0 },
+    overdue: { count: 0, amount: 0 },
+  };
+  for (const s of stats.statuses) {
+    byStatus[s.status] = { count: s.count, amount: s.amount };
+  }
+
   return (
     <div className="space-y-8">
       {/* Greeting — minimal */}
@@ -87,21 +101,23 @@ export default async function DashboardPage({
         />
       )}
 
-      {/* KPI strip — editorial, tonal */}
-      <div className="grid grid-cols-1 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-white sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-white/10 dark:border-white/10 dark:bg-white/[0.04]">
-        <KpiCell
+      {/* Status KPI strip — 4 status cards (Draft / Unpaid / Overdue / Paid) */}
+      <StatusKpiStrip byStatus={byStatus} currency={ccy} />
+
+      {/* Flat secondary stats — small text row, no balloons */}
+      <div className="flex flex-wrap items-baseline gap-x-8 gap-y-3 border-y border-slate-200 py-4 text-sm dark:border-white/10">
+        <StatLine
           label={t.dashboard.totalRevenue}
           value={formatCurrency(stats.rangeRevenue, ccy)}
-          hint={t.dashboard.totalRevenueHint(rangeLabel)}
+          hint={rangeLabel}
           delta={delta}
-          deltaText={delta !== null ? t.actions.delta(delta) : t.actions.noChange}
         />
-        <KpiCell
+        <StatLine
           label={t.dashboard.outstanding}
           value={formatCurrency(stats.unpaidAmount, ccy)}
-          hint={t.dashboard.outstandingHint(stats.unpaidCount)}
+          hint={`${stats.unpaidCount}`}
         />
-        <KpiCell
+        <StatLine
           label={t.dashboard.activeClients}
           value={stats.activeClients.toString()}
           hint={t.dashboard.activeClientsHint}
@@ -229,41 +245,39 @@ export default async function DashboardPage({
   );
 }
 
-function KpiCell({
+function StatLine({
   label,
   value,
   hint,
   delta,
-  deltaText,
 }: {
   label: string;
   value: string;
-  hint: string;
+  hint?: string;
   delta?: number | null;
-  deltaText?: string;
 }) {
   const positive = delta !== undefined && delta !== null && delta >= 0;
   return (
-    <div className="p-6">
-      <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">{label}</div>
-      <div className="mt-3 flex items-baseline gap-3">
-        <span className="text-3xl font-semibold tracking-[-0.025em] text-slate-900 sm:text-4xl dark:text-slate-100">
+    <div>
+      <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">
+        {label}
+      </p>
+      <div className="mt-1 flex items-baseline gap-2">
+        <span className="text-xl font-semibold tabular-nums text-slate-900 dark:text-slate-100">
           {value}
         </span>
         {delta !== undefined && delta !== null && (
           <span
             className={cn(
-              "rounded-full px-2 py-0.5 text-xs font-medium",
-              positive
-                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
-                : "bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300"
+              "text-xs font-medium",
+              positive ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
             )}
           >
             {positive ? "▲" : "▼"} {Math.abs(delta).toFixed(0)}%
           </span>
         )}
+        {hint && <span className="text-xs text-slate-500 dark:text-slate-400">· {hint}</span>}
       </div>
-      <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{deltaText ?? hint}</p>
     </div>
   );
 }

@@ -39,7 +39,7 @@ export default async function InvoicesPage({
   const period: InvoicePeriod = (VALID_PERIODS.includes(sp.period as InvoicePeriod)
     ? sp.period
     : "all") as InvoicePeriod;
-  const view: ViewMode = (VALID_VIEWS.includes(sp.view as ViewMode) ? sp.view : "grid") as ViewMode;
+  const view: ViewMode = (VALID_VIEWS.includes(sp.view as ViewMode) ? sp.view : "table") as ViewMode;
 
   const { invoices, total, pageSize, summary } = await listInvoices(user.id, {
     q: sp.q,

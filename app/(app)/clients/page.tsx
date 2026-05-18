@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
-import { listClients } from "@/services/clients";
+import { listClients, getClientKpis } from "@/services/clients";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -8,6 +8,7 @@ import { Table, THead, TR, TH, TD } from "@/components/ui/Table";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { FilterBar } from "@/components/ui/FilterBar";
 import { Pagination } from "@/components/ui/Pagination";
+import { ClientKpiStrip } from "@/components/clients/ClientKpiStrip";
 import { formatDate } from "@/lib/utils";
 import { getDict } from "@/lib/i18n/server";
 import type { ClientStatus } from "@/types/db";
@@ -21,7 +22,7 @@ export default async function ClientsPage({
 }) {
   const sp = await searchParams;
   const { user } = await requireUser();
-  const t = await getDict();
+  const [t, kpis] = await Promise.all([getDict(), getClientKpis(user.id)]);
   const status = (sp.status as ClientStatus | "all" | undefined) ?? "all";
   const page = Number(sp.page ?? 1);
 
@@ -44,6 +45,9 @@ export default async function ClientsPage({
         }
       />
 
+      {/* KPI strip */}
+      <ClientKpiStrip kpis={kpis} />
+
       <FilterBar
         searchPlaceholder={t.clients.searchPh}
         statusOptions={[
@@ -65,7 +69,7 @@ export default async function ClientsPage({
           }
         />
       ) : (
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+        <div className="space-y-3">
           <Table className="border-0">
             <THead>
               <tr>
@@ -80,8 +84,8 @@ export default async function ClientsPage({
             <tbody>
               {clients.map((c) => (
                 <TR key={c.id}>
-                  <TD className="font-medium text-slate-900">
-                    <Link href={`/clients/${c.id}`} className="hover:text-brand-700">
+                  <TD className="font-medium text-slate-900 dark:text-slate-100">
+                    <Link href={`/clients/${c.id}`} className="hover:text-brand-700 dark:hover:text-brand-400">
                       {c.name}
                     </Link>
                   </TD>
@@ -94,9 +98,9 @@ export default async function ClientsPage({
                   <TD className="text-right">
                     <Link
                       href={`/clients/${c.id}/edit`}
-                      className="text-sm font-medium text-brand-600 hover:text-brand-700"
+                      className="font-mono text-[11px] uppercase tracking-widest text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
                     >
-                      {t.common.edit}
+                      {t.common.edit} →
                     </Link>
                   </TD>
                 </TR>
