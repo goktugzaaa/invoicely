@@ -21,10 +21,10 @@ export function Sidebar() {
     },
   ];
   return (
-    <aside className="relative hidden w-60 shrink-0 border-r border-slate-200 bg-white md:block dark:border-slate-800 dark:bg-slate-900">
+    <aside className="relative hidden w-60 shrink-0 border-r border-slate-200 bg-white md:block dark:border-white/10 dark:bg-white/[0.02] dark:backdrop-blur-xl">
       {/* brand top strip */}
       <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-brand-gradient" />
-      <div className="flex h-16 items-center border-b border-slate-100 px-5 dark:border-slate-800">
+      <div className="flex h-16 items-center border-b border-slate-100 px-5 dark:border-white/10">
         <Brand size="sm" href="/dashboard" />
       </div>
       <nav className="p-3">
@@ -65,7 +65,7 @@ export function Sidebar() {
       </nav>
 
       {/* footer brand mark */}
-      <div className="absolute inset-x-0 bottom-0 border-t border-slate-100 px-5 py-3 dark:border-slate-800">
+      <div className="absolute inset-x-0 bottom-0 border-t border-slate-100 px-5 py-3 dark:border-white/10">
         <p className="text-[10px] uppercase tracking-widest text-slate-400 dark:text-slate-500">
           Nib <span className="text-slate-300 dark:text-slate-700">·</span> v1.0
         </p>

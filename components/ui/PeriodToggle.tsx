@@ -35,7 +35,7 @@ export function PeriodToggle({ value }: { value: Period }) {
 
   return (
     <div
-      className="inline-flex items-center rounded-lg border border-slate-200 bg-white p-0.5 text-xs font-medium dark:border-slate-700 dark:bg-slate-900"
+      className="inline-flex items-center rounded-lg border border-slate-200 bg-white p-0.5 text-xs font-medium dark:border-white/15 dark:bg-white/[0.04]"
       aria-busy={pending}
     >
       {ORDER.map((p) => {
@@ -50,7 +50,7 @@ export function PeriodToggle({ value }: { value: Period }) {
               "rounded-md px-3 py-1 transition-colors",
               active
                 ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
-                : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800",
+                : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/[0.06]",
               pending && !active && "cursor-not-allowed opacity-50"
             )}
           >

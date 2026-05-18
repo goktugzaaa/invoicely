@@ -88,7 +88,7 @@ export default async function DashboardPage({
       )}
 
       {/* KPI strip — editorial, tonal */}
-      <div className="grid grid-cols-1 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-white sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-slate-800 dark:border-slate-800 dark:bg-slate-900">
+      <div className="grid grid-cols-1 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-white sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-white/10 dark:border-white/10 dark:bg-white/[0.04]">
         <KpiCell
           label={t.dashboard.totalRevenue}
           value={formatCurrency(stats.rangeRevenue, ccy)}

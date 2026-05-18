@@ -12,7 +12,7 @@ export function PageHeader({
   eyebrow?: string;
 }) {
   return (
-    <div className="flex flex-col gap-3 border-b border-slate-200 pb-6 sm:flex-row sm:items-end sm:justify-between dark:border-slate-800">
+    <div className="flex flex-col gap-3 border-b border-slate-200 pb-6 sm:flex-row sm:items-end sm:justify-between dark:border-white/10">
       <div>
         {eyebrow && (
           <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.4em] text-slate-500 dark:text-slate-400">

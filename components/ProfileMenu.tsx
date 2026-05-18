@@ -46,9 +46,9 @@ export function ProfileMenu({ email, businessName }: { email: string; businessNa
       {open && (
         <div
           role="menu"
-          className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-xl animate-fade-in-down dark:border-slate-700 dark:bg-slate-900"
+          className="absolute right-0 z-50 mt-2 w-64 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-xl animate-fade-in-down dark:border-white/15 dark:bg-white/[0.04]"
         >
-          <div className="border-b border-slate-100 px-4 py-3 dark:border-slate-800">
+          <div className="border-b border-slate-100 px-4 py-3 dark:border-white/10">
             <p className="font-mono text-[10px] uppercase tracking-widest text-slate-500 dark:text-slate-400">
               {t.nav.account}
             </p>
@@ -60,7 +60,7 @@ export function ProfileMenu({ email, businessName }: { email: string; businessNa
           <Link
             href="/settings"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+            className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-white/[0.06]"
             role="menuitem"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4 text-slate-400 dark:text-slate-500">

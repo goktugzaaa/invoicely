@@ -17,12 +17,18 @@ export interface ListInvoicesParams {
   pageSize?: number;
 }
 
+export interface StatusBucket {
+  count: number;
+  amount: number;
+}
+
 export interface PeriodSummary {
   count: number;
   total: number;
   paid: number;
   unpaid: number;
   currency: string;
+  byStatus: Record<InvoiceStatus, StatusBucket>;
 }
 
 export interface ListInvoicesResult {
@@ -93,16 +99,26 @@ export async function listInvoices(
   if (sumRes.error) throw sumRes.error;
 
   const sumRows = sumRes.data ?? [];
+  const byStatus: Record<InvoiceStatus, StatusBucket> = {
+    draft: { count: 0, amount: 0 },
+    sent: { count: 0, amount: 0 },
+    paid: { count: 0, amount: 0 },
+    overdue: { count: 0, amount: 0 },
+  };
+  for (const r of sumRows) {
+    const s = r.status as InvoiceStatus;
+    if (byStatus[s]) {
+      byStatus[s].count += 1;
+      byStatus[s].amount += Number(r.total_amount ?? 0);
+    }
+  }
   const summary: PeriodSummary = {
     count: sumRows.length,
     total: sumRows.reduce((s, r) => s + Number(r.total_amount ?? 0), 0),
-    paid: sumRows
-      .filter((r) => r.status === "paid")
-      .reduce((s, r) => s + Number(r.total_amount ?? 0), 0),
-    unpaid: sumRows
-      .filter((r) => ["sent", "overdue"].includes(r.status as string))
-      .reduce((s, r) => s + Number(r.total_amount ?? 0), 0),
+    paid: byStatus.paid.amount,
+    unpaid: byStatus.sent.amount + byStatus.overdue.amount,
     currency: (sumRows[0]?.currency as string) || "USD",
+    byStatus,
   };
 
   return {

@@ -9,18 +9,27 @@ import { FilterBar } from "@/components/ui/FilterBar";
 import { Pagination } from "@/components/ui/Pagination";
 import { PeriodToggle, type Period } from "@/components/ui/PeriodToggle";
 import { getDict } from "@/lib/i18n/server";
-import { formatCurrency } from "@/lib/utils";
 import { InvoiceTable } from "./InvoiceTable";
+import { StatusKpiStrip } from "@/components/invoices/StatusKpiStrip";
+import { InvoiceGrid } from "@/components/invoices/InvoiceGrid";
+import { ViewToggle, type ViewMode } from "@/components/invoices/ViewToggle";
 import type { InvoiceStatus } from "@/types/db";
 
 export const dynamic = "force-dynamic";
 
 const VALID_PERIODS: InvoicePeriod[] = ["week", "month", "quarter", "year", "all"];
+const VALID_VIEWS: ViewMode[] = ["grid", "table"];
 
 export default async function InvoicesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; status?: string; page?: string; period?: string }>;
+  searchParams: Promise<{
+    q?: string;
+    status?: string;
+    page?: string;
+    period?: string;
+    view?: string;
+  }>;
 }) {
   const sp = await searchParams;
   const { user } = await requireUser();
@@ -30,6 +39,7 @@ export default async function InvoicesPage({
   const period: InvoicePeriod = (VALID_PERIODS.includes(sp.period as InvoicePeriod)
     ? sp.period
     : "all") as InvoicePeriod;
+  const view: ViewMode = (VALID_VIEWS.includes(sp.view as ViewMode) ? sp.view : "grid") as ViewMode;
 
   const { invoices, total, pageSize, summary } = await listInvoices(user.id, {
     q: sp.q,
@@ -45,7 +55,7 @@ export default async function InvoicesPage({
       <PageHeader
         eyebrow={t.landing.eyebrowBilling}
         title={t.invoices.title}
-        description={t.invoices.desc}
+        description={`${summary.count} ${t.invoices.title.toLowerCase()}`}
         actions={
           <Link href="/invoices/new">
             <Button>{t.invoices.newInvoice}</Button>
@@ -53,15 +63,13 @@ export default async function InvoicesPage({
         }
       />
 
-      {/* Period + Summary strip */}
-      <div className="space-y-3">
+      {/* Status KPI strip — Draft / Unpaid / Overdue / Paid */}
+      <StatusKpiStrip byStatus={summary.byStatus} currency={ccy} />
+
+      {/* Period + View toggles */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <PeriodToggle value={period as Period} />
-        <div className="grid grid-cols-2 divide-y divide-slate-200 overflow-hidden rounded-2xl border border-slate-200 bg-white sm:grid-cols-4 sm:divide-x sm:divide-y-0 dark:divide-slate-800 dark:border-slate-800 dark:bg-slate-900">
-          <SummaryCell label={t.invoices.summaryCount(summary.count)} value={summary.count.toString()} mono />
-          <SummaryCell label={t.invoices.summaryTotal} value={formatCurrency(summary.total, ccy)} />
-          <SummaryCell label={t.invoices.summaryPaid} value={formatCurrency(summary.paid, ccy)} accent="emerald" />
-          <SummaryCell label={t.invoices.summaryUnpaid} value={formatCurrency(summary.unpaid, ccy)} accent="amber" />
-        </div>
+        <ViewToggle value={view} />
       </div>
 
       <FilterBar
@@ -88,45 +96,16 @@ export default async function InvoicesPage({
         />
       ) : (
         <div className="space-y-3">
-          <InvoiceTable invoices={invoices} />
+          {view === "grid" ? <InvoiceGrid invoices={invoices} /> : <InvoiceTable invoices={invoices} />}
           <Pagination
             page={page}
             pageSize={pageSize}
             total={total}
             basePath="/invoices"
-            query={{ q: sp.q, status: sp.status, period: sp.period }}
+            query={{ q: sp.q, status: sp.status, period: sp.period, view: sp.view }}
           />
         </div>
       )}
-    </div>
-  );
-}
-
-function SummaryCell({
-  label,
-  value,
-  accent,
-  mono,
-}: {
-  label: string;
-  value: string;
-  accent?: "emerald" | "amber";
-  mono?: boolean;
-}) {
-  const valueColor =
-    accent === "emerald"
-      ? "text-emerald-700 dark:text-emerald-400"
-      : accent === "amber"
-        ? "text-amber-700 dark:text-amber-400"
-        : "text-slate-900 dark:text-slate-100";
-  return (
-    <div className="p-5">
-      <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">
-        {label}
-      </div>
-      <div className={`mt-2 text-2xl font-semibold tracking-tight ${valueColor} ${mono ? "font-mono" : ""}`}>
-        {value}
-      </div>
     </div>
   );
 }

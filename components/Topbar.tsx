@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Topbar({ email, businessName }: { email: string; businessName?: string | null }) {
   return (
-    <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6 dark:border-slate-800 dark:bg-slate-900">
+    <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white/80 px-6 backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.02]">
       <div className="md:hidden">
         <Brand size="sm" href="/dashboard" />
       </div>

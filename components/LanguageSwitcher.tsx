@@ -49,7 +49,7 @@ export function LanguageSwitcher() {
         aria-expanded={open}
         className={cn(
           "inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50",
-          "dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800",
+          "dark:border-white/15 dark:bg-white/[0.04] dark:text-slate-200 dark:hover:bg-white/[0.06]",
           pending && "opacity-60"
         )}
       >
@@ -62,7 +62,7 @@ export function LanguageSwitcher() {
       {open && (
         <ul
           role="listbox"
-          className="absolute right-0 z-50 mt-1 w-44 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 text-sm shadow-lg animate-fade-in-down dark:border-slate-700 dark:bg-slate-900"
+          className="absolute right-0 z-50 mt-1 w-44 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 text-sm shadow-lg animate-fade-in-down dark:border-white/15 dark:bg-white/[0.04]"
         >
           {LOCALES.map((l) => (
             <li key={l}>
@@ -73,7 +73,7 @@ export function LanguageSwitcher() {
                   "flex w-full items-center gap-2 px-3 py-1.5 text-left",
                   l === locale
                     ? "bg-brand-50 text-brand-700 dark:bg-brand-950/40 dark:text-brand-300"
-                    : "text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                    : "text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-white/[0.06]"
                 )}
               >
                 <span className="text-base leading-none">{FLAGS[l]}</span>

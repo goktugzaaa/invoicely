@@ -38,7 +38,7 @@ export function RangeToggle({ value }: { value: DashboardRange }) {
     <div
       className={cn(
         "inline-flex items-center rounded-lg border border-slate-200 bg-white p-0.5 text-xs font-medium transition-opacity",
-        "dark:border-slate-700 dark:bg-slate-900",
+        "dark:border-white/15 dark:bg-white/[0.04]",
         pending && "opacity-90"
       )}
       aria-busy={pending}
@@ -57,8 +57,8 @@ export function RangeToggle({ value }: { value: DashboardRange }) {
               isActive
                 ? "bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900"
                 : isLoading
-                  ? "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200"
-                  : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800",
+                  ? "bg-slate-100 text-slate-700 dark:bg-white/[0.06] dark:text-slate-200"
+                  : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/[0.06]",
               pending && !isLoading && !isActive && "cursor-not-allowed opacity-50"
             )}
           >

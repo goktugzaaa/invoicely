@@ -16,7 +16,7 @@ export function TopClients({ clients }: { clients: TopClient[] }) {
   }
   const max = clients[0]?.total ?? 0;
   return (
-    <ul className="divide-y divide-slate-100 dark:divide-slate-800">
+    <ul className="divide-y divide-slate-100 dark:divide-white/10">
       {clients.map((c, i) => {
         const pct = max > 0 ? (c.total / max) * 100 : 0;
         return (
@@ -43,7 +43,7 @@ export function TopClients({ clients }: { clients: TopClient[] }) {
                   </span>
                 </span>
               </div>
-              <div className="mt-2 h-1 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+              <div className="mt-2 h-1 overflow-hidden rounded-full bg-slate-100 dark:bg-white/[0.06]">
                 <div
                   className="h-full rounded-full bg-brand-gradient transition-all"
                   style={{ width: `${pct}%` }}

@@ -15,7 +15,11 @@ body {
 }
 
 html.dark body {
-  @apply bg-slate-950 text-slate-100;
+  background-color: #0a0a0d;
+  background-image:
+    radial-gradient(1200px 600px at 20% -10%, rgba(244, 63, 94, 0.06), transparent 60%),
+    radial-gradient(1000px 500px at 80% 110%, rgba(16, 185, 129, 0.05), transparent 60%);
+  @apply text-slate-100;
 }
 
 @layer utilities {
@@ -36,6 +40,35 @@ html.dark body {
       linear-gradient(135deg, #1f3df5, #06b6d4) border-box;
     border: 1px solid transparent;
   }
+
+  /* Glass surface — translucent card on dark/light */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    backdrop-filter: saturate(140%) blur(14px);
+    -webkit-backdrop-filter: saturate(140%) blur(14px);
+  }
+  html.dark .glass {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    backdrop-filter: saturate(160%) blur(18px);
+    -webkit-backdrop-filter: saturate(160%) blur(18px);
+  }
+  html.dark .glass-strong {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Inner glow tints for status KPIs */
+  .glow-rose { box-shadow: inset 0 0 80px -20px rgba(244, 63, 94, 0.25); }
+  .glow-emerald { box-shadow: inset 0 0 80px -20px rgba(16, 185, 129, 0.25); }
+  .glow-amber { box-shadow: inset 0 0 80px -20px rgba(245, 158, 11, 0.22); }
+  .glow-slate { box-shadow: inset 0 0 80px -20px rgba(148, 163, 184, 0.18); }
 }
 
 /* Custom scrollbar — brand accent */
